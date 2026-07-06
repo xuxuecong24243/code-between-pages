@@ -15,6 +15,11 @@ export default defineConfig({
     { text: "Notes", link: "/notes/" },
     { text: "AI", link: "/ai/" }
   ],
+  
+  outline: {
+  level: [2, 3],
+  label: 'On this page'
+  },
 
   sidebar: {
     "/software/": [
