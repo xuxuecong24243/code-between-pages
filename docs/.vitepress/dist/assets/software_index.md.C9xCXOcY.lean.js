@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as a}from"./chunks/framework.Pgx0u2Ay.js";const _=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"software/index.md","filePath":"software/index.md"}'),r={name:"software/index.md"};function o(n,s,c,d,i,f){return t(),a("div")}const m=e(r,[["render",o]]);export{_ as __pageData,m as default};
