@@ -217,7 +217,7 @@ $$
 
 ## 5 Python实现
 
-<<< ./Lost_baggage.py
+<<< ./Lost_Baggage.py
 
 
 ## 6 求解结果
