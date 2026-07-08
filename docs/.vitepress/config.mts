@@ -1,10 +1,16 @@
 import { defineConfig } from 'vitepress'
+import mathjax3 from 'markdown-it-mathjax3'
 
 export default defineConfig({
   title: 'Code Between Pages',
   description: 'Notes, Research & Code',
-
   base: '/code-between-pages/',
+  
+  markdown: {
+    config(md) {
+      md.use(mathjax3)
+    }
+  },
 
   themeConfig: {
   nav: [

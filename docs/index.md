@@ -14,6 +14,10 @@ hero:
       link: /research/
 
 features:
+  - title: Projects
+    details: Optimization models, personal projects, and software development case studies.
+    link: /projects/
+  
   - title: Software
     details: Installation guides, configuration notes, and practical software usage.
     link: /software/

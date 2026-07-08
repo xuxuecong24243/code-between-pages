@@ -1,3 +1,57 @@
+# =========================
+# Node.js
+# =========================
 node_modules/
-.vitepress/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# VitePress
+# =========================
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# =========================
+# Gurobi
+# =========================
+*.lp
+*.mps
+*.sol
+*.mst
+*.bas
+*.ilp
+
+# =========================
+# Operating System
+# =========================
 .DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Private Resources
+# =========================
+_private/
