@@ -5,6 +5,8 @@ hero:
   name: Code Between Pages
   text: Personal Knowledge Base
   tagline: Notes on software, research, programming, and AI tools.
+
+
   actions:
     - theme: brand
       text: Start Reading
