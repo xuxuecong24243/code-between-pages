@@ -5,6 +5,18 @@ export default defineConfig({
   title: 'Code Between Pages',
   description: 'Notes, Research & Code',
   base: '/code-between-pages/',
+
+  head: [
+  [
+    'script',
+    {
+      defer: '',
+      src: 'https://cloud.umami.is/script.js',
+      'data-website-id': '0d3328fa-f7de-46ce-a314-3b6ae9ed629e',
+      'data-domains': 'xuxuecong24243.github.io'
+    }
+  ]
+],
   
   markdown: {
     config(md) {
@@ -49,17 +61,28 @@ export default defineConfig({
       }
     ],
 
-    "/programming/": [
-      {
-        text: "Programming",
-        items: [
-          { text: "Overview", link: "/programming/" },
-          { text: "Git", link: "/programming/git/" },
-          { text: "Markdown", link: "/programming/markdown/" },
-          { text: "VitePress", link: "/programming/vitepress/" }
-        ]
-      }
-    ],
+    "/programming/gurobi/": [
+    {
+      text: "Gurobi",
+      items: [
+        { text: "Overview", link: "/programming/gurobi/" },
+        { text: "基本语法", link: "/programming/gurobi/basic-syntax" }
+      ]
+    }
+  ],
+
+  "/programming/": [
+    {
+      text: "Programming",
+      items: [
+        { text: "Overview", link: "/programming/" },
+        { text: "Git", link: "/programming/git/" },
+        { text: "Markdown", link: "/programming/markdown/" },
+        { text: "VitePress", link: "/programming/vitepress/" },
+        { text: "Gurobi", link: "/programming/gurobi/" }
+      ]
+    }
+  ],
 
     "/notes/": [
       {
