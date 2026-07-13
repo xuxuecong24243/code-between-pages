@@ -35,7 +35,7 @@
 >**说明：**本项目来源于《Model Building in Mathematical Programming》中的**Lost Baggage Distribution**案例，本文对该问题进行建模实现、求解分析与项目复盘。
 
 
-## 3 问题分析
+## 3. 问题分析
 
 从问题特征来看，本案例属于经典**车辆路径问题（Vehicle Routing Problem，VRP）**。车辆需要从同一个配送中心出发，对多个配送地点完成配送任务，并合理规划每辆车的服务客户及访问顺序，因此本质上属于多车辆路径规划问题。
 
@@ -52,7 +52,7 @@
 
 综合以上特点，本案例可视为**无容量约束、无客户时间窗且无需返回配送中心**的车辆路径问题。模型需要同时解决三个关键决策：**1.使用的车辆数；2.每辆车的配送客户集合；3.配送顺序**。在满足所有配送任务均于规定时间内完成的前提下，首先最小化车辆使用数量，再进一步优化最长配送时间。
 
-## 4 数学建模
+## 4. 数学建模
 
 本节将该问题建模为一个整数规划模型。模型的核心思想是：用二进制变量表示车辆是否被使用、客户是否由某辆车服务，以及车辆是否从一个地点直接行驶到另一个地点。
 
@@ -214,18 +214,32 @@ $$
 2. 固定车辆数为$V^*$；
 3. 在该条件下最小化最长配送时间$Z$。
 
-## 5 Python实现
+## 5. Python实现
 
 <<< ./Lost_Baggage.py
 
 
-## 6 求解结果
-<div align="center">
-  <img src="./img/02.png" alt="运行结果" width="90%">
-</div>
-<p align="center">
-<b>图 1.</b> 运行结果
-</p>
+## 6. 求解结果
+```python
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.000000000000e+02, best bound 1.000000000000e+02, gap 0.0000%
+
+User-callback calls 1448, time in user-callback 0.02 sec
+
+第二阶段结果
+
+车辆 1
+节点编号: [1, 2, 3, 10, 12, 11, 5, 7, 6]
+路线: Heathrow -> Harrow -> Ealing -> Hammersmith -> Richmond -> Kingston -> Sutton -> Bromley -> Dartford
+配送时间: 99 min
+
+车辆 2
+节点编号: [1, 14, 4, 13, 8, 15, 9]
+路线: Heathrow -> Islington -> Holborn -> Battersea -> Greenwich -> Woolwich -> Barking
+配送时间: 100 min
+
+最长配送时间 = 100 min
+```
 
 
 
