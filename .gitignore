@@ -55,3 +55,4 @@ Thumbs.db
 # Private Resources
 # =========================
 _private/
+**/.template.md

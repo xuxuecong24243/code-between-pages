@@ -27,8 +27,8 @@ export default defineConfig({
   themeConfig: {
   nav: [
     { text: "首页", link: "/" },
+    { text: "Optimization", link: "/Optimization/" },
     { text: "Software", link: "/software/" },
-    { text: "Research", link: "/research/" },
     { text: "Programming", link: "/programming/" },
     { text: "Notes", link: "/notes/" },
     { text: "AI", link: "/ai/" }

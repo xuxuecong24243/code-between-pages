@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Code Between Pages
   text: Personal Knowledge Base
-  tagline: Notes on software, research, programming, and AI tools.
+  tagline: A personal knowledge base on optimization, scheduling, and programming.
 
 
   actions:
@@ -16,12 +16,12 @@ hero:
       link: /research/
 
 features:
-  - title: Projects
-    details: Optimization models, personal projects, and software development case studies.
-    link: /projects/
+  - title: optimization
+    details: Scheduling, routing, mathematical programming, and Gurobi-based optimization.
+    link: /optimization/
   
   - title: Software
-    details: Installation guides, configuration notes, and practical software usage.
+    details: Development tools, software configuration, and practical engineering workflows.
     link: /software/
 
   - title: Research
