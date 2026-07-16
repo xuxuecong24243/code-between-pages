@@ -58,9 +58,7 @@
 目前已整理：
 
 - [LaTeX 编译后图片变成 CMYK 色彩](./image-cmyk.md)
-- [参考文献显示为问号](./citation-question-mark.md)
-- [Undefined control sequence 报错](./undefined-control-sequence.md)
-- [图片无法正常显示](./figure-not-show.md)
+
 
 ---
 
