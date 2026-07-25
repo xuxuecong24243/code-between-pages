@@ -56,3 +56,4 @@ Thumbs.db
 # =========================
 _private/
 **/.template.md
+**/_*.md

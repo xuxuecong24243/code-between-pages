@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import mathjax3 from 'markdown-it-mathjax3'
+import footnote from 'markdown-it-footnote'
 
 export default defineConfig({
   title: 'Code Between Pages',
@@ -21,6 +22,7 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(mathjax3)
+      md.use(footnote)
     }
   },
 
