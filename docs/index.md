@@ -29,7 +29,7 @@ features:
     link: /research/
 
   - title: Programming
-    details: Git, Markdown, VitePress, Python, and development notes.
+    details: Latex, Git, Markdown, Python, and development notes.
     link: /programming/
 
   - title: AI

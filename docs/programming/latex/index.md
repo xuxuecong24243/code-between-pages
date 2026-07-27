@@ -22,3 +22,5 @@
 - 环境配置异常
 
 👉 [查看案例](./troubleshooting/)
+
+[LaTeX 伪代码分页](./pseudocode-page-break)
