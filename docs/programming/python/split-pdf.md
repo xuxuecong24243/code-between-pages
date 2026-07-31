@@ -55,19 +55,9 @@ page_ranges = [
 
 当前版本会将多个页码范围提取后合并到同一个 PDF 文件中：
 
-```text
-原始PDF
-
-225-241页
-+
-318-320页
-+
-371-372页
-
-        ↓
-
-output_part.pdf
-```
+<div align="center">
+  <img src="./img/02.png" width="90%">
+</div>
 
 方便后续打印或者单独阅读。
 
@@ -104,23 +94,9 @@ pdf-toolbox
 
 ## 4. 实现思路
 
-PDF 页面提取的整体流程如下：
-
-```text
-              PDF文件
-                 |
-                 ↓
-          PdfReader读取
-                 |
-                 ↓
-          根据页码选择页面
-                 |
-                 ↓
-          PdfWriter添加页面
-                 |
-                 ↓
-          保存新的PDF文件
-```
+<div align="center">
+  <img src="./img/01.png" width="90%">
+</div>
 
 其中：
 
