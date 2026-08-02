@@ -1,3 +1,7 @@
+---
+sidebar: false
+outline: false
+---
 # AI
 
 这里整理 AI 相关的提示词、使用方法与实践记录。

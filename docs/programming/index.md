@@ -1,3 +1,6 @@
+---
+sidebar: false
+---
 # 💻 Programming
 
 记录编程开发过程中的语言学习、工具使用以及项目实践经验。

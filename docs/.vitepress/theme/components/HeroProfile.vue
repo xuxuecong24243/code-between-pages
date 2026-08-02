@@ -1,6 +1,6 @@
 <template>
   <div class="hero-profile">
-    <img src="/images/author.jpg" class="hero-avatar" alt="author" />
+    <img src="/images/author1.jpg" class="hero-avatar" alt="author" />
 
     <div class="hero-contact">
       <div>📧 xuxuecong2024@163.com</div>

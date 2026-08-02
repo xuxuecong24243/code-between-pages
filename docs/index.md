@@ -36,9 +36,6 @@ features:
     details: ChatGPT, Claude, Cursor, prompt engineering, and AI workflows.
     link: /ai/
 
-  - title: Notes
-    details: General notes, learning records, ideas, and knowledge management.
-    link: /notes/
 
   - title: About
     details: About this site and how the knowledge base is organized.

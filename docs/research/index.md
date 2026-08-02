@@ -1,5 +1,6 @@
 ---
 title: 科研笔记
+sidebar: false
 ---
 
 # 目录

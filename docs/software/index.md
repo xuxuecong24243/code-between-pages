@@ -1,3 +1,6 @@
+---
+sidebar: false
+---
 # Software
 
 Software installation guides, configuration tutorials, and practical usage notes.

@@ -1,3 +1,6 @@
+---
+sidebar: false
+---
 # Optimization
 
 这里记录我在**运筹优化（Operations Research）**

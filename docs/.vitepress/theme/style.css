@@ -5,10 +5,13 @@
 }
 
 .hero-avatar {
-  width: 240px;
-  height: 240px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   object-fit: cover;
+
+  /* 将照片内容稍微向右移动 */
+  object-position: 30% center;
 }
 
 .hero-contact {
@@ -17,4 +20,25 @@
   line-height: 1.9;
   font-size: 14px;
   color: var(--vp-c-text-2);
+}
+
+/* 浅色模式：首页整体背景 */
+.VPContent.is-home {
+  min-height: 100vh;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.00),
+      rgba(255, 255, 255, 0.00)
+    ),
+    url('/images/home-bg.webp');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 深色模式取消背景图 */
+.dark .VPContent.is-home {
+  background: var(--vp-c-bg);
 }
