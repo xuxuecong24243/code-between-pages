@@ -8,6 +8,7 @@ sidebar: false
 
 ## 章节目录
 
-- [第 23 章：高级建模方法——多目标优化、惰性约束与特殊约束](./chapter-23-advanced-modeling.md)
+- [第 23 章：高级建模方法](./chapter-23-advanced-modeling.md)
+- [第 24 章：基本求解进程控制方法](./chapter-24-gurobi-solve-process-control.md)
 
 > 持续更新中……
