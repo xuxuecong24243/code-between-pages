@@ -42,3 +42,10 @@
 .dark .VPContent.is-home {
   background: var(--vp-c-bg);
 }
+
+mark {
+  background-color: #dbeafe;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 3px;
+}

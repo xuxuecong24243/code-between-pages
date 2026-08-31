@@ -63,3 +63,8 @@ sidebar: false
 - 项目版本控制。
 
 👉 [查看项目](./git/)
+
+
+## Algorithms
+
+👉 [进入 Algorithms 专栏](./algorithms/)
