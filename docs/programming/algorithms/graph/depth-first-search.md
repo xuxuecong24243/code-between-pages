@@ -22,13 +22,13 @@
 ## 2.示例
 
 <div align="center">
-  <img src="./img/img1.png" alt="示例图" width="500">
+  <img src="./img/depth-first-search-img1.png" alt="示例图" width="500">
   <p>图 1 无向图G</p>
 </div>
 
 
 <div align="center">
-  <img src="./img/img2.png" alt="深度优先搜索" width="500">
+  <img src="./img/depth-first-search-img2.png" alt="深度优先搜索" width="500">
   <p>图 2 深度优先搜索的过程</p> 
   <small>注：粗实线箭头表示访问路径，虚线箭头表示回溯路径。</small>
 </div>
