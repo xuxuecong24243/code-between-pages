@@ -9,4 +9,4 @@ sidebar: false
 ## 内容导航
 
 - [深度优先搜索（DFS）](./depth-first-search.md)
-- [Dijkstra 单源最短路径算法](./dijkstra.md)
+- [Dijkstra 单源最短路径算法](./Dijkstra.md)
