@@ -37,6 +37,10 @@ features:
     link: /ai/
 
 
+  - title: Interview
+    details: Here is a collection of the questions encounter during interviews.
+    link: /interview/
+
   - title: About
     details: About this site and how the knowledge base is organized.
     link: /about/
