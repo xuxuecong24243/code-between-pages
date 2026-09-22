@@ -29,7 +29,7 @@ export default defineConfig({
   themeConfig: {
   nav: [
     { text: "首页", link: "/" },
-    { text: "Optimization", link: "/Optimization/" },
+    { text: "Optimization", link: "/optimization/" },
     { text: "Software", link: "/software/" },
     { text: 'Research', link: "/research/" },
     { text: "Programming", link: "/programming/" },

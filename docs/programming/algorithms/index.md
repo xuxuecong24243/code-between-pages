@@ -8,11 +8,9 @@ sidebar: false
 
 ## 内容导航
 
-### 图算法
+### [图算法](./graph/)
 
-- [图算法](./graph/)
-  - [深度优先搜索（DFS）](./graph/depth-first-search.md)
-  - [Dijkstra 最短路径算法](./graph/Dijkstra.md)
+
 
 ### 排序算法
 

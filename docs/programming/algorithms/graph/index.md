@@ -10,3 +10,5 @@ sidebar: false
 
 - [深度优先搜索（DFS）](./depth-first-search.md)
 - [Dijkstra 单源最短路径算法](./Dijkstra.md)
+- [A*](./A%20star.md)
+- [Floyd算法](./Floyd.md)
