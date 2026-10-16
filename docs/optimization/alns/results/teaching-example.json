@@ -1,0 +1,75 @@
+{
+  "kind": "constructed teaching example, not a stochastic run",
+  "coordinates": {
+    "A": [
+      0,
+      0
+    ],
+    "B": [
+      2,
+      0
+    ],
+    "C": [
+      4,
+      0
+    ],
+    "D": [
+      4,
+      3
+    ],
+    "E": [
+      2,
+      3
+    ],
+    "F": [
+      0,
+      3
+    ]
+  },
+  "distance_rule": "unrounded Euclidean",
+  "routes": [
+    [
+      "A",
+      "C",
+      "B",
+      "D",
+      "F",
+      "E"
+    ],
+    [
+      "A",
+      "B",
+      "C",
+      "D",
+      "F",
+      "E"
+    ],
+    [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ]
+  ],
+  "lengths": [
+    19.21110255092798,
+    16.605551275463988,
+    14.0
+  ],
+  "annealing_example": {
+    "temperature": 2,
+    "acceptance_probability": 0.27177639235039713
+  },
+  "updated_weights": [
+    1,
+    1.4,
+    1
+  ],
+  "probabilities": [
+    0.29411764705882354,
+    0.4117647058823529,
+    0.29411764705882354
+  ]
+}

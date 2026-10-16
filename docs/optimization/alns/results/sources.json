@@ -1,0 +1,35 @@
+{
+  "tag": "v7.0.0",
+  "files": [
+    {
+      "file": "travelling_salesman_problem.ipynb",
+      "url": "https://raw.githubusercontent.com/N-Wouda/ALNS/v7.0.0/examples/travelling_salesman_problem.ipynb",
+      "sha256": "f1027d8846cef31264da0395d440c839e427dea12d173a6acd76b9c284aa10b6",
+      "bytes": 14373
+    },
+    {
+      "file": "data/xqf131.tsp",
+      "url": "https://raw.githubusercontent.com/N-Wouda/ALNS/v7.0.0/examples/data/xqf131.tsp",
+      "sha256": "01b847e4dd5a39e5fe14239fd0b0bc7be71ab640d7fc5509c227c3b5d1387a0c",
+      "bytes": 1405
+    },
+    {
+      "file": "data/xqf131.opt.tour",
+      "url": "https://raw.githubusercontent.com/N-Wouda/ALNS/v7.0.0/examples/data/xqf131.opt.tour",
+      "sha256": "123de90bedad9a1181bc9f3083a467b194c2d5e462c91af5f51d8b61de814ceb",
+      "bytes": 500
+    },
+    {
+      "file": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/N-Wouda/ALNS/v7.0.0/LICENSE.md",
+      "sha256": "b2f979be5ffb974e15a8a90fc1866842e81d9af15489cb7a3fc2d91823afc66f",
+      "bytes": 1095
+    },
+    {
+      "file": "pyproject.toml",
+      "url": "https://raw.githubusercontent.com/N-Wouda/ALNS/v7.0.0/pyproject.toml",
+      "sha256": "96841a527bdb33dd211670896b6ecefe87d608898e78df1bfbdfd99bd1d6cde8",
+      "bytes": 2900
+    }
+  ]
+}

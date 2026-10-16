@@ -1,0 +1,33 @@
+{
+  "random": {
+    "runs": 10,
+    "mean_objective": 601.6,
+    "std_objective_ddof1": 10.373041983911952,
+    "min_objective": 587.0,
+    "max_objective": 620.0,
+    "mean_gap_percent": 6.666666666666667,
+    "std_gap_percent_ddof1": 1.8391918411191406,
+    "mean_elapsed_seconds": 10.106547560000001,
+    "std_elapsed_seconds_ddof1": 0.5438462577379775,
+    "all_feasible": true
+  },
+  "roulette": {
+    "runs": 10,
+    "mean_objective": 594.2,
+    "std_objective_ddof1": 4.638007234913623,
+    "min_objective": 585.0,
+    "max_objective": 599.0,
+    "mean_gap_percent": 5.3546099290780145,
+    "std_gap_percent_ddof1": 0.8223417083180183,
+    "mean_elapsed_seconds": 11.209646480000004,
+    "std_elapsed_seconds_ddof1": 0.7008999633913494,
+    "all_feasible": true
+  },
+  "paired_roulette_minus_random": {
+    "mean_objective_difference": -7.4,
+    "std_difference_ddof1": 12.894443247642245,
+    "roulette_better": 6,
+    "tie": 0,
+    "random_better": 4
+  }
+}

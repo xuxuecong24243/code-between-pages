@@ -95,7 +95,15 @@ export default defineConfig({
           { text: "ChatGPT", link: "/ai/chatgpt/" },
           { text: "Cursor", link: "/ai/cursor/" },
           { text: "Claude", link: "/ai/claude/" },
-          { text: "Prompt", link: "/ai/prompt/" }
+          {
+            text: "Prompt",
+            link: "/ai/prompts/",
+            items: [
+              { text: "学习项目生成器", link: "/ai/prompts/learning-project-generator" },
+              { text: "小红书帖子生成器", link: "/ai/prompts/xiaohongshu-post-generator" },
+              { text: "AI 学习助手", link: "/ai/prompts/ai-learning-framework" }
+            ]
+          }
         ]
       }
     ]

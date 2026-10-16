@@ -1,0 +1,22 @@
+# Exact environment used for the recorded runs (Python 3.9.10, Windows x64).
+alns==7.0.0
+click==8.1.8
+colorama==0.4.6
+contourpy==1.3.0
+cycler==0.12.1
+Deprecated==1.2.18
+fonttools==4.60.2
+importlib_resources==6.5.2
+kiwisolver==1.4.7
+matplotlib==3.9.4
+networkx==2.8.8
+numpy==1.26.4
+packaging==26.3
+pillow==11.3.0
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+six==1.17.0
+tabulate==0.8.10
+tsplib95==0.7.1
+wrapt==1.17.3
+zipp==3.23.1

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "initial_objective": 854.0,
+  "reference_objective": 564.0,
+  "destroy_repair_cases": 60,
+  "checks": [
+    "all matrix entries agree with TSPLIB",
+    "reference tour feasible and length 564",
+    "official initial solution length 854",
+    "TSPLIB half-up rounding",
+    "destroy state isolation",
+    "partial objective guard",
+    "repair feasibility",
+    "nonconsecutive node IDs",
+    "small-instance nonempty destruction",
+    "premature subcycle rejected",
+    "complete tour closure allowed",
+    "independent single-cycle validation",
+    "fresh-component seed reproducibility"
+  ]
+}

@@ -17,6 +17,12 @@ sidebar: false
 
 ## 目录
 
+### 自适应大邻域搜索（ALNS）
+
+从邻域搜索、破坏与修复到算子自适应选择，用 TSP 理解原理并完成 Python 实践。
+
+👉 [从邻域搜索到 ALNS：原理与 Python 实践](./alns/)
+
 ### 🚚 路径优化（Routing）
 
 👉 [进入 Routing 专栏](./routing/)
