@@ -101,7 +101,8 @@ export default defineConfig({
             items: [
               { text: "学习项目生成器", link: "/ai/prompts/learning-project-generator" },
               { text: "小红书帖子生成器", link: "/ai/prompts/xiaohongshu-post-generator" },
-              { text: "AI 学习助手", link: "/ai/prompts/ai-learning-framework" }
+              { text: "AI 学习助手", link: "/ai/prompts/ai-learning-framework" },
+              { text: "AI 运动动作示意图生成 Prompt", link: "/ai/prompts/exercise-illustration-generator" }
             ]
           }
         ]
