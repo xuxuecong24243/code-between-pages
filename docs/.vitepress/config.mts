@@ -103,7 +103,8 @@ export default defineConfig({
               { text: "小红书帖子生成器", link: "/ai/prompts/xiaohongshu-post-generator" },
               { text: "AI 学习助手", link: "/ai/prompts/ai-learning-framework" },
               { text: "AI 运动动作示意图生成 Prompt", link: "/ai/prompts/exercise-illustration-generator" },
-              { text: "极简学术风格技术示意图生成 Prompt", link: "/ai/prompts/minimalist-academic-diagram" }
+              { text: "极简学术风格技术示意图生成 Prompt", link: "/ai/prompts/minimalist-academic-diagram" },
+              { text: "小红书技术博主文案生成 Prompt", link: "/ai/prompts/xiaohongshu-tech-post-generator" }
             ]
           }
         ]
