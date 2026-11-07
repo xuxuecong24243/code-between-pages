@@ -1,0 +1,90 @@
+% Paper Code Academic Blue. Load in the preamble; compile with XeLaTeX.
+\usepackage{iftex}
+\RequireXeTeX
+\usepackage{fix-cm}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage[paperwidth=180mm,paperheight=240mm,margin=0mm]{geometry}
+
+% Select one page size in the preamble, after loading this file.
+\newcommand{\PaperCodePortrait}{\geometry{paperwidth=180mm,paperheight=240mm,margin=0mm}}
+\newcommand{\PaperCodeLandscape}{\geometry{paperwidth=240mm,paperheight=180mm,margin=0mm}}
+\newcommand{\PaperCodeWide}{\geometry{paperwidth=280mm,paperheight=140mm,margin=0mm}}
+\newlength{\PaperSafeMargin}
+\setlength{\PaperSafeMargin}{10mm}
+
+% Named fonts first; TeX Live font files provide portable fallbacks.
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{
+  % Fandol has positioning tables but no GSUB script table; use auto shaping.
+  \setCJKmainfont{FandolSong-Regular.otf}[Script=CustomDefault,BoldFont=FandolSong-Bold.otf]
+}
+\IfFontExistsTF{Noto Serif}{
+  \setmainfont{Noto Serif}
+}{
+  \setmainfont{texgyretermes-regular.otf}[
+    BoldFont=texgyretermes-bold.otf,
+    ItalicFont=texgyretermes-italic.otf,
+    BoldItalicFont=texgyretermes-bolditalic.otf]
+}
+\IfFontExistsTF{Latin Modern Mono}{
+  \setmonofont{Latin Modern Mono}
+}{
+  \setmonofont{lmmono10-regular.otf}
+}
+
+\definecolor{PaperWhite}{HTML}{FFFFFF}
+\definecolor{TextBlack}{HTML}{171717}
+\definecolor{DeepGray}{HTML}{444444}
+\definecolor{AcademicBlue}{HTML}{3B82C4}
+\definecolor{ModuleBlue}{HTML}{E1EFFC}
+\definecolor{NoteBlue}{HTML}{EDF0F5}
+\definecolor{BorderGray}{HTML}{777777}
+\definecolor{LineBlack}{HTML}{292929}
+
+% Size / baseline spacing in pt. Redefine these commands for the whole series.
+\newcommand{\PaperTitleFont}{\normalfont\fontsize{22}{28}\selectfont\bfseries}
+\newcommand{\PaperSectionFont}{\normalfont\fontsize{15}{19}\selectfont\bfseries}
+\newcommand{\PaperModuleFont}{\normalfont\fontsize{12}{16}\selectfont\bfseries}
+\newcommand{\PaperBodyFont}{\normalfont\fontsize{11}{15}\selectfont}
+\newcommand{\PaperNoteFont}{\normalfont\fontsize{9.5}{13}\selectfont}
+
+\tikzset{
+  every node/.style={font=\PaperBodyFont,text=TextBlack},
+  basicblock/.style={draw=LineBlack,fill=PaperWhite,line width=0.65pt,
+    rounded corners=2mm,inner sep=3mm,align=center},
+  keyblock/.style={basicblock,fill=ModuleBlue},
+  noteblock/.style={draw=none,fill=NoteBlue,rounded corners=2mm,
+    inner sep=3mm,align=left},
+  sectionbox/.style={draw=BorderGray,fill=none,line width=0.6pt,
+    rounded corners=3mm,inner sep=4mm},
+  flowarrow/.style={-{Stealth[length=2.2mm]},draw=LineBlack,line width=0.75pt},
+  sumblock/.style={circle,draw=LineBlack,fill=PaperWhite,line width=0.65pt,
+    minimum size=7mm,inner sep=0pt},
+  pagetitle/.style={font=\PaperTitleFont,align=center},
+  sectiontitle/.style={font=\PaperSectionFont,anchor=north west,inner sep=0pt},
+  dimension/.style={font=\PaperBodyFont,align=center},
+  annotation/.style={font=\PaperNoteFont,text=DeepGray,align=left}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\AtBeginDocument{\pagecolor{PaperWhite}\color{TextBlack}\PaperBodyFont}
+
+% Fixed page canvas: origin at the top left, coordinates measured in mm.
+% Geometry's zero margin only sets the canvas. Keep all nodes, frames, and
+% arrowheads inside PaperSafeMargin; overlays are not checked by TeX hbox warnings.
+\newenvironment{papercodepage}{
+  \par\noindent
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={(current page.north west)},x=1mm,y=-1mm]
+}{
+    \end{scope}
+  \end{tikzpicture}%
+  \mbox{}\par
+}

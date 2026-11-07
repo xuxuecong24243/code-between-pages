@@ -1,0 +1,54 @@
+% Compile from latex/: xelatex -output-directory=.build example-transformer.tex
+% This is one defined Pre-LN FFN residual sublayer, not a complete GPT-2 block.
+\documentclass[11pt]{article}
+\input{paper-code-style.tex}
+\PaperCodePortrait
+% Enlarge content for a phone-width preview; retain the shared style hierarchy.
+\renewcommand{\PaperModuleFont}{\normalfont\fontsize{14}{18}\selectfont\bfseries}
+\renewcommand{\PaperBodyFont}{\normalfont\fontsize{14}{18}\selectfont}
+\renewcommand{\PaperNoteFont}{\normalfont\fontsize{11}{15}\selectfont}
+
+\begin{document}
+\begin{papercodepage}
+  \node[pagetitle,anchor=north,text width=156mm] at (90,12)
+    {前馈网络与残差连接};
+  \node[annotation,anchor=north,align=center] at (90,28)
+    {Transformer\quad /\quad Pre-LN 子层};
+
+  \begin{scope}[on background layer]
+    \draw[sectionbox] (12,43) rectangle (168,174);
+  \end{scope}
+  \node[sectiontitle] at (18,48) {(a) 计算流程};
+  \node[dimension] (input) at (90,66)
+    {$X\in\mathbb{R}^{B\times T\times d}$};
+  \node[basicblock,text width=58mm] (norm) at (90,88)
+    {{\PaperModuleFont LayerNorm}\\[1mm]
+     $U=\operatorname{LN}(X)$};
+  \node[keyblock,text width=82mm] (ffn) at (90,120)
+    {{\PaperModuleFont FeedForward (FFN)}\\[1.5mm]
+     $H=\operatorname{GELU}(UW_1+b_1)$\\[1mm]
+     $F=HW_2+b_2$};
+  \node[sumblock] (sum) at (90,148) {$+$};
+  \node[dimension,text width=110mm] (output) at (90,164)
+    {$Y=X+F\in\mathbb{R}^{B\times T\times d}$};
+
+  \draw[flowarrow] (input.south) -- (norm.north);
+  \draw[flowarrow] (norm.south) -- (ffn.north);
+  \draw[flowarrow] (ffn.south) -- (sum.north);
+  \draw[flowarrow] (sum.south) -- (output.north);
+  \draw[flowarrow] (input.east) -- (149,66) |- (sum.east);
+  \node[annotation,anchor=west,inner sep=1mm] at (151,108) {恒等\\分支 $X$};
+
+  \node[noteblock,anchor=north,text width=144mm] at (90,183) {
+    {\PaperModuleFont (b) 维度与约定}\\[1.5mm]
+    $W_1\in\mathbb{R}^{d\times d_f},\quad
+     W_2\in\mathbb{R}^{d_f\times d},\quad
+     b_1\in\mathbb{R}^{d_f},\quad b_2\in\mathbb{R}^{d}$\\[1mm]
+    $H\in\mathbb{R}^{B\times T\times d_f},\quad
+     U,F,Y\in\mathbb{R}^{B\times T\times d}$\\[1mm]
+    {\PaperNoteFont $B$：批大小；$T$：序列长度；$d$：特征维；$d_f$：中间维。\\
+    使用数学右乘权重；偏置沿 $B,T$ 广播；LN 沿最后一维。\\
+    本例定义无 Dropout 的 FFN 子层，不包含注意力子层。}
+  };
+\end{papercodepage}
+\end{document}
