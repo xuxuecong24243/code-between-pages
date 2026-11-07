@@ -54,7 +54,7 @@ GPT-2 参考图通过五个分区组织整体结构、Transformer Block、注意
 三种画布的 `geometry` 配置分别为：
 
 ```latex
-% 每个文档只选一种；共享样式已加载 geometry 时，使用第 9 节的页面命令。
+% 在 main.tex 的导言区为整组页面选择一种；共享样式已加载 geometry 时，使用第 9 节的页面命令。
 \usepackage[paperwidth=180mm,paperheight=240mm,margin=0mm]{geometry}
 % \usepackage[paperwidth=240mm,paperheight=180mm,margin=0mm]{geometry}
 % \usepackage[paperwidth=280mm,paperheight=140mm,margin=0mm]{geometry}
@@ -170,6 +170,8 @@ $$
 
 多页统一尺寸、标题、字体、底纹、线宽、圆角、公式和信息密度。子图编号可用 `(a)`、`(b)`、`(c)`，系列页也可用简洁的页码。不得为了增加页数补内容；能清楚放入一张时无需拆分。
 
+这里的“多图”默认是同一项目中的多个页面：由一个 `main.tex` 统一组织，编译为一个多页 `main.pdf`，再按页导出 PNG；每页 PDF / PNG 对应一张图。拆分技术主题不意味着拆成多个独立主文件。
+
 ## 8. 数学和代码准确性要求 {#accuracy}
 
 绘图前整理用户提供的文字、代码、公式、参数、形状、模型结构和截图，先形成符号表与计算顺序，再决定布局。对已校验内容只优化表达；发现数学或代码问题时，明确列出原始问题、修正依据和影响，将技术修正与视觉调整分开说明，不静默改变结论。
@@ -187,18 +189,34 @@ $$
 
 ## 9. LaTeX/TikZ 通用模板 {#template}
 
-工程放在仓库根目录的 `latex/`，所有图共享同一份样式：
+优先复用工作目录中已有的 LaTeX 工程、`main.tex`、共享样式与可用图源码，先检查现有内容，再补充本次任务所需部分；已有样式符合本规范时直接沿用，避免重复创建工程或重新定义整套样式。工程放在仓库根目录的 `latex/`，默认结构如下（以四张图为例）：
 
 ```text
 latex/
-  .gitignore                 # 忽略 .build/ 编译中间文件
-  paper-code-style.tex       # 字体、颜色、字号、页面与 TikZ 样式
-  example-transformer.tex    # 可独立编译的主文件，加载同目录样式
-  .build/                    # 编译日志、辅助文件及待检查 PDF
-  output/                    # 检查后的 PDF 与 PNG
+├── .gitignore                 # 忽略 .build/ 编译中间文件
+├── paper-code-style.tex       # 字体、颜色、字号、页面与 TikZ 样式
+├── main.tex                   # 整组图片唯一的主编译入口
+├── figures/
+│   ├── 01_topic_a.tex          # 仅包含该页的 TikZ / 页面主体
+│   ├── 02_topic_b.tex
+│   ├── 03_topic_c.tex
+│   └── 04_topic_d.tex
+├── .build/                    # 编译日志、辅助文件与待检查的 PDF / PNG
+└── output/
+    ├── main.pdf               # 每页一张图的多页 PDF
+    ├── 01_topic_a.png
+    ├── 02_topic_b.png
+    ├── 03_topic_c.png
+    └── 04_topic_d.png
 ```
 
-“可独立编译”指示例是带有 `\documentclass` 和 `document` 环境的入口文件，与共享样式放在同一目录后即可编译，不依赖其他章节或私有图片。复制到新工程时应同时复制这两个 `.tex` 文件。
+`main.tex` 是唯一主编译入口，包含 `\documentclass` 和 `document` 环境，并在导言区用 `\input{paper-code-style.tex}` 加载共享样式。多张图优先分别存入 `figures/`，由 `main.tex` 按页面顺序统一 `\input`；子图文件只包含该页的 TikZ / 页面主体，不重复声明文档或加载整套样式。单张图也使用 `main.tex`，只生成一页；内容很少时可直接在主文件中写页面主体。
+
+相邻图页之间由 `main.tex` 显式使用 `\clearpage` 分页；子图文件不自行分页，避免同页叠图或意外空白页。复制到新工程时应同时提供 `main.tex`、共享样式及所有被引用的子图源码，不依赖其他章节、私有图片或未提供的资源。
+
+先完成全部技术图的可用源码版本，再集中编译整组图片并逐页进行视觉验收；不要在其余页面尚未完成时反复打磨某一页。只对技术错误、编译阻塞或明显排版问题进行有依据的定向修复，达到验收要求后停止，不为主观美化无限循环修改。
+
+**例外**：只有用户明确要求“每张图单独交付、单独维护、单独编译”时，才切换为每张图一个独立主文件的模式，仍复用共享样式；这不是默认模式。仅要求每张图各有一张 PNG，不触发该例外。
 
 ### 共享样式
 
@@ -206,9 +224,9 @@ latex/
 
 <<< ../../../latex/paper-code-style.tex{latex}
 
-页面命令在导言区、加载样式后调用：`\PaperCodePortrait`（默认）、`\PaperCodeLandscape`、`\PaperCodeWide`。`papercodepage` 的原点在页面左上角，坐标以 mm 为单位，向右、向下为正。
+页面命令在 `main.tex` 的导言区、加载样式后调用，为整组页面选择尺寸：`\PaperCodePortrait`（默认）、`\PaperCodeLandscape`、`\PaperCodeWide`。`papercodepage` 的原点在页面左上角，坐标以 mm 为单位，向右、向下为正。
 
-`\PaperSafeMargin` 的默认值为 10 mm，是布局边界约定，不自动裁剪或移动节点。改变纸张方向后须重新布局，不能只换页面命令就假定原有坐标适配；多页可以分别使用独立主文件，共享样式即可。
+`\PaperSafeMargin` 的默认值为 10 mm，是布局边界约定，不自动裁剪或移动节点。改变纸张方向后须重新布局，不能只换页面命令就假定原有坐标适配。本模板默认整组使用同一尺寸；确需混用方向时，应在同一个主入口中显式处理逐页纸张尺寸并分别重排、验收，不能直接在子图中调用仅用于导言区的页面命令，也不能因此默认拆成多个主文件。
 
 ### 最小完整示例
 
@@ -216,7 +234,29 @@ latex/
 
 为改善手机宽度下的阅读，示例通过共享命令将模块标题、正文公式调为 14 pt，注释调为 11 pt，并相应重排间距。这是按实际画布放大基础字号的示范；同一系列沿用这组覆盖值，不逐个节点随意修改。
 
-<<< ../../../latex/example-transformer.tex{latex}
+主文件 `latex/main.tex` 负责加载共享样式、统一字号并组织图页：
+
+<<< ../../../latex/main.tex{latex}
+
+子图源码 `latex/figures/01_transformer.tex` 只保留该页的绘图主体：
+
+<<< ../../../latex/figures/01_transformer.tex{latex}
+
+扩展为多张图时，保留主文件的导言区，将正文按下列方式组织；文件名应与实际技术主题对应：
+
+```latex
+\begin{document}
+\input{figures/01_topic_a.tex}
+\clearpage
+\input{figures/02_topic_b.tex}
+\clearpage
+\input{figures/03_topic_c.tex}
+\clearpage
+\input{figures/04_topic_d.tex}
+\end{document}
+```
+
+以上四个子图文件各包含一个完整的 `papercodepage` 环境，不包含 `\documentclass`、`\begin{document}` 或 `\end{document}`。统一编译 `main.tex` 后得到四页 `main.pdf`，按相同顺序导出四张 PNG；仓库内的最小示例只有 `01_transformer.tex`，因此生成一页 PDF 和一张 PNG。
 
 ## 10. 可直接复制使用的完整技术绘图 Prompt {#complete-prompt}
 
@@ -228,7 +268,9 @@ latex/
 
 一、目标与工作顺序
 采用固定设计系统 Paper Code Academic Blue，定位为 Minimalist Academic Style / Scientific Diagram / LaTeX TikZ Illustration。
-先分析文字、代码、公式、参数、张量形状、模型结构及截图，整理符号与计算顺序；再决定分图与布局；最后生成源码、编译、渲染并逐张检查。
+先检查并优先复用已有工程、主文件、共享样式和可用图源码；分析文字、代码、公式、参数、张量形状、模型结构及截图，整理符号与计算顺序，再决定分图与布局。
+先完成全部技术图的可用源码版本，再统一编译 main.tex，渲染整份 PDF 并逐页进行视觉验收，不在其他页面尚未完成时反复打磨某一页。
+只针对技术错误、编译阻塞或明显排版问题进行定向修复；达到验收要求后停止，不为主观美化无限制自动修改。
 保持数学教材式排版、论文级技术准确性、教科书式结构表达，以及手机端可读性。
 有参考图时提取视觉语言，但仍须核对其技术内容；没有参考图时直接按以下规范工作。
 
@@ -272,7 +314,8 @@ PaperWhite 用于画布和普通模块；TextBlack 用于标题、正文、公�
 \usepackage[paperwidth=180mm,paperheight=240mm,margin=0mm]{geometry}
 横向网络、数据流、多矩阵比较可用 240mm × 180mm，比例 4:3。
 仅在复杂模型全貌确有需要时用 280mm × 140mm，比例 2:1。
-共享样式提供 \PaperCodePortrait、\PaperCodeLandscape、\PaperCodeWide，在导言区选择一种尺寸。
+共享样式提供 \PaperCodePortrait、\PaperCodeLandscape、\PaperCodeWide，在 main.tex 的导言区为整组页面选择一种尺寸。
+确需混用方向时，在同一主入口中显式处理逐页纸张尺寸并重排、验收；不在子图中调用仅用于导言区的页面命令，不因此默认拆成多个主文件。
 margin=0mm 只定义画布；文字、公式、边框和箭头尖端距四边至少 10mm，计入节点内边距和实际高度。定义 \PaperSafeMargin=10mm 作为布局约定。
 模块间距参考 6–10mm，有标签时适当增大。内容过多应删重复说明、重排或拆图，不使用全图缩放或缩小全部字号来挤入页面。
 
@@ -296,6 +339,7 @@ margin=0mm 只定义画布；文字、公式、边框和箭头尖端距四边至
 层级为：主标题 → 核心技术图 → 公式和维度 → 必要说明。
 标题简洁准确；维度紧邻对应计算；参数与公式总结放在灰蓝区；相关模块可放入外框；子图编号 (a)、(b)、(c) 可选。
 单页可读性不足时优先拆为 2–5 张，每张一个完整主题。GPT-2 可拆为整体结构、Block 数据流、多头注意力、FFN 参数维度；只有内容需要时才增加参数比较页。
+多张图默认属于同一个项目，由一个 main.tex 组织为多页 main.pdf，每页一张图，再按页导出 PNG；拆图不等于拆成多个独立主文件。
 系列图统一页面尺寸、标题、字体、底纹、线宽、圆角、公式排版和信息密度；不同方向须有明确理由。
 
 八、按内容类型绘制
@@ -317,21 +361,44 @@ margin=0mm 只定义画布；文字、公式、边框和箭头尖端距四边至
 
 十、工程交付
 使用 XeLaTeX、TikZ、xeCJK、fontspec、amsmath、amssymb、xcolor、geometry。
-在工作目录创建或复用 latex/paper-code-style.tex，统一字体、八种配色、字号、四类模块、箭头、标题和三种页面尺寸；各图片用 \input{paper-code-style.tex} 加载，避免每张重复定义。
-每张图提供包含 documentclass 与 document 环境的独立主文件，与共享样式一起即可编译，不依赖私有图片或未提供的资源。
-如需最小样例，创建 latex/example-transformer.tex，至少包含白色模块、浅蓝重点模块、灰蓝说明区、外层容器、数学公式与箭头；内容必须准确，明确示例的适用范围。
-中间文件放 latex/.build/；检查后的 PDF 与 PNG 放 latex/output/，采用清晰稳定的文件名。
+优先复用已有 LaTeX 工程、main.tex、paper-code-style.tex 和可用图源码，检查后按需补充；已有样式符合规范时直接沿用，不重复创建工程或重写整套样式。
+默认工程结构（以四张图为例，按实际主题调整文件名和数量）：
+latex/
+├── paper-code-style.tex
+├── main.tex
+├── figures/
+│   ├── 01_topic_a.tex
+│   ├── 02_topic_b.tex
+│   ├── 03_topic_c.tex
+│   └── 04_topic_d.tex
+├── .build/
+└── output/
+    ├── main.pdf
+    ├── 01_topic_a.png
+    ├── 02_topic_b.png
+    ├── 03_topic_c.png
+    └── 04_topic_d.png
+main.tex 是唯一主编译入口，包含 \documentclass 与 document 环境，在导言区用 \input{paper-code-style.tex} 加载共享样式。
+共享样式统一字体、八种配色、字号、四类模块、箭头、标题和三种可选页面尺寸；整组只加载一次，避免每张重复定义。
+多张图优先使用 \input{figures/01_topic_a.tex} 等方式按页组织；子图文件只包含该页的 TikZ / 页面主体，不重复写完整 document 或加载整套共享样式。
+每张图占 PDF 的独立一页，相邻图页由 main.tex 用 \clearpage 分隔；子图不自行分页，避免同页叠图或意外空白页。使用 papercodepage 环境时，每个子图包含一个完整环境。
+单张图任务仍使用 main.tex，只生成一页；内容很少时可直接把页面主体写在主文件中。
+交付 main.tex、共享样式及所有被引用的子图源码，保证从 latex/ 编译即可生成完整 PDF，不依赖私有图片或未提供的资源。
+如需最小样例，用 main.tex 加载 figures/01_transformer.tex，至少包含白色模块、浅蓝重点模块、灰蓝说明区、外层容器、数学公式与箭头；内容必须准确，明确示例的适用范围。
+中间文件与待检查产物放 latex/.build/；验收后的整份 PDF 放 latex/output/main.pdf，PNG 按 PDF 页序导出，采用与图页对应的稳定文件名，如 01_topic_a.png。每页 PDF / PNG 对应一张图，保留页码、主题与文件名的映射。
+仅当用户明确要求每张图单独交付、单独维护或单独编译时，才采用每张图一个独立主文件的模式，并继续复用共享样式；这不是默认模式。仅要求逐张提供 PNG 不触发该例外。
 保留现有工程与用户修改，不覆盖无关内容，不自动 commit、push、部署或发布。
 
 十一、编译、视觉验收与报告
-1. 检查源码语法、符号、维度、运算顺序、偏置与参数统计。
-2. 在主文件所在目录用 XeLaTeX 编译；使用 -interaction=nonstopmode、-halt-on-error、-file-line-error。需要时再编译以稳定页面锚点和引用。
+1. 先完成全部技术图的可用源码版本，检查各页语法、符号、维度、运算顺序、偏置与参数统计，再集中进入编译和视觉验收。
+2. 默认在 latex/ 中仅编译 main.tex：xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=.build main.tex。需要时再次编译同一入口以稳定页面锚点和引用，不分别编译 figures/ 下的子图文件。
 3. 检查日志中的错误、缺字、字体替代、Overfull/Underfull hbox 或 vbox。修复影响正确性和排版的问题。
-4. 检查 PDF 页数、尺寸、字体和内容边界；TikZ overlay 的越界未必产生 Overfull 警告，必须另查实际画面。
-5. 将每页 PDF 渲染为 PNG，长边至少 2000px，建议 2400px；保持原始比例和白底，优先保证 PDF 矢量质量。
-6. 逐张打开 PNG，检查截断、重叠、箭头交叉与遮挡、上下标、中文缺字、对齐、圆角、填充及四周安全边距；再按约 375–430px 手机宽度检查阅读体验。
-7. 发现问题后修改、重新编译并重新检查。编译成功不能代替视觉验收。
-8. 最后列出文件路径、技术修正与假设、编译及视觉检查结果。如环境缺少编译器、字体或渲染器，给出具体缺失项与可运行命令，不声称已编译或已目视检查。
+4. 优先检查 .build/main.pdf，确认页数与计划图数一致、页序正确、每页恰好一张图，没有空白页；逐页检查尺寸、字体和内容边界。TikZ overlay 的越界未必产生 Overfull 警告，必须另查实际画面。
+5. 从同一份 main.pdf 按页导出全部 PNG，不只导出首页。长边至少 2000px，建议 2400px；保持原始比例和白底，优先保证 PDF 矢量质量，核对 PNG 数量、页序与文件名映射。
+6. 按 PDF 页序逐页打开对应 PNG，检查截断、重叠、箭头交叉与遮挡、上下标、中文缺字、对齐、圆角、填充及四周安全边距；再按约 375–430px 手机宽度检查阅读体验。验收对象是整份 PDF 的各页，不是多个独立 tex 主文件。
+7. 集中记录问题，只对技术错误、编译阻塞或明显排版问题（如缺字、截断、重叠、越界、箭头遮挡、手机宽度下不可读）做必要修复；重新编译 main.tex 后，复查受影响页面及整份 PDF 的页数、页序。若修改共享样式，则复查全部页面。编译成功不能代替视觉验收。
+8. 达到技术正确、页面完整和可读性要求后停止；不因主观美化偏好反复重排或无限制自动修复。同一问题修复无进展时停止自动重试，报告剩余问题与原因，不掩盖未通过项。
+9. 验收后将 main.pdf 与全部按页命名的 PNG 放入 output/。最后列出文件路径、页码与 PNG 对应关系、技术修正与假设、编译及逐页视觉检查结果。如环境缺少编译器、字体或渲染器，给出具体缺失项与可运行命令，不声称已编译或已目视检查。
 
 十二、我的绘图任务
 主题：[填写]
@@ -341,6 +408,8 @@ margin=0mm 只定义画布；文字、公式、边框和箭头尖端距四边至
 内容是否已校验：[填写]
 模型/实现版本与偏置、掩码、权重共享等约定：[按需填写]
 期望方向与张数：[默认竖版，按可读性决定是否拆图]
+已有工程与共享样式路径：[按需填写；存在时优先复用]
+工程交付方式：[默认一个 main.tex + 多页 main.pdf + 按页 PNG；单张任务为一页 PDF]
 额外限制：[填写或写“无”]
 ```
 
@@ -361,7 +430,7 @@ W_1∈R^(d×d_f)，W_2∈R^(d_f×d)，b_1∈R^d_f，b_2∈R^d。
 只展示这个子层，不把它标成完整 GPT-2 Block；所有参数用符号，不补出数值。
 ```
 
-对应源码见第 9 节，编译产物为 `latex/output/example-transformer.pdf` 与 `latex/output/example-transformer.png`。
+对应源码见第 9 节，由 `latex/main.tex` 加载 `latex/figures/01_transformer.tex`；编译产物为一页的 `latex/output/main.pdf` 与 `latex/output/01_transformer.png`。
 
 ### 示例 B：注意力矩阵乘法的维度
 
@@ -373,6 +442,7 @@ P=Softmax(S)，沿最后一个键位置轴归一化；S,P 的形状为 (B,h,T,T)
 C=PV，形状为 (B,h,T,d_h)。
 要求：用二维切片表示单个 batch 和 head，外框标注 B,h 分组；箭头上标明收缩维。
 所有公式用 LaTeX，不能把注意力权重 P 标成 C 的形状；若拥挤，拆成打分与加权求和两张。
+若拆成两张，由同一个 main.tex 加载两页子图源码，生成两页 main.pdf，再分别导出 01_attention_scores.png 与 02_attention_context.png。
 ```
 
 ### 示例 C：0/1 背包动态规划
@@ -390,38 +460,59 @@ c≥w_i 时 f(i,c)=max(f(i-1,c),f(i-1,c-w_i)+v_i)。
 
 ## 12. 编译、检查与输出要求 {#validation}
 
-以下 PowerShell 命令从仓库根目录开始执行。先确认已安装包含 XeLaTeX、xeCJK、TikZ、Fandol 的 TeX 发行版，以及 `pdftoppm`、`pdfinfo`；不会自动安装或升级全局环境。
+优先复用已有工程和共享样式，先完成全部技术图的可用源码版本，再集中编译 `main.tex`、检查整份 `main.pdf` 并逐页验收。不要在其他图页尚未完成时，为某一页反复编译和微调。
+
+以下 PowerShell 命令从仓库根目录开始执行。先确认已安装包含 XeLaTeX、xeCJK、TikZ、Fandol 的 TeX 发行版，以及 `pdftoppm`、`pdfinfo`；不会自动安装或升级全局环境。`$figureNames` 按 `main.tex` 的实际图页顺序填写，不带扩展名；仓库最小示例只有一页，多图任务则列出全部图页名称。
 
 ```powershell
 Set-Location latex
 New-Item -ItemType Directory -Path .build, output -Force | Out-Null
-xelatex '-interaction=nonstopmode' '-halt-on-error' '-file-line-error' '-output-directory=.build' example-transformer.tex
+$figureNames = @('01_transformer')
+# 四页工程示例：@('01_topic_a', '02_topic_b', '03_topic_c', '04_topic_d')
+xelatex '-interaction=nonstopmode' '-halt-on-error' '-file-line-error' '-output-directory=.build' main.tex
 if ($LASTEXITCODE -ne 0) { throw 'XeLaTeX 编译失败，请检查日志。' }
-xelatex '-interaction=nonstopmode' '-halt-on-error' '-file-line-error' '-output-directory=.build' example-transformer.tex
+xelatex '-interaction=nonstopmode' '-halt-on-error' '-file-line-error' '-output-directory=.build' main.tex
 if ($LASTEXITCODE -ne 0) { throw 'XeLaTeX 第二次编译失败。' }
-Select-String -Path .build/example-transformer.log -Pattern 'Overfull|Underfull|Missing character|Warning|Error'
-pdfinfo .build/example-transformer.pdf
-pdftoppm -png -singlefile -scale-to 2400 .build/example-transformer.pdf .build/example-transformer
+Select-String -Path .build/main.log -Pattern 'Overfull|Underfull|Missing character|Warning|Error'
+pdfinfo .build/main.pdf
+if ($LASTEXITCODE -ne 0) { throw 'PDF 信息读取失败。' }
+# 每次使用新的待检查目录，避免将上次导出的旧页混入本次验收。
+$renderDir = Join-Path '.build' ('render-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $renderDir | Out-Null
+pdftoppm -png -scale-to 2400 .build/main.pdf (Join-Path $renderDir 'main')
 if ($LASTEXITCODE -ne 0) { throw 'PNG 导出失败。' }
+$pagePngs = @(Get-ChildItem -LiteralPath $renderDir -Filter 'main-*.png' -File |
+  Sort-Object { [int]($_.BaseName -replace '^main-', '') })
+if ($pagePngs.Count -ne $figureNames.Count) {
+  throw 'PDF 导出页数与图页清单不一致，请检查漏页、叠页或空白页。'
+}
+$pagePngs.FullName
 ```
 
-两次编译用于稳定 `remember picture` 页面锚点。检查日志后，打开 `.build/example-transformer.png` 逐项核对：
+两次编译均针对同一个 `main.tex`，用于稳定 `remember picture` 页面锚点，不分别编译子图。批量导出时不使用 `-singlefile`，由 `pdftoppm` 生成带页码的 PNG，并按数字页码排序，避免第 10 页排在第 2 页前面。检查日志与 `.build/main.pdf` 后，按 `$pagePngs` 顺序逐页打开 PNG，核对页码、主题和 `$figureNames` 的映射：
 
-- 页面为 180 × 240 mm，3:4；PNG 约为 1800 × 2400 px，PDF 点数取整可能使宽度多 1 px。
+- PDF 页数与计划图数、PNG 数量一致，每页恰好一张图，页序正确，无意外空白页或叠图。
+- 默认页面为 180 × 240 mm，3:4；PNG 约为 1800 × 2400 px，PDF 点数取整可能使宽度多 1 px。使用其他规定尺寸时，按该页实际比例检查。
 - 中文、英文、公式和上下标无缺字，字号层级清楚，填充和边框符合规范。
-- 模块、公式与安全边距无冲突，箭头不穿过文字，恒等分支准确接到加法节点。
-- 权重、偏置和中间张量维度一致；示例的局部范围与无 Dropout 约定可见。
+- 模块、公式与安全边距无冲突，箭头不穿过文字；第 9 节示例的恒等分支准确接到加法节点。
+- 各页权重、偏置和中间张量维度一致；第 9 节示例的局部范围与无 Dropout 约定可见。
 - 在原始大小及约 375–430 px 宽的手机预览下检查；不要靠高分辨率掩盖拥挤排版。
 
-`overlay` 定位超出页面时，TeX 不一定报告 `Overfull \hbox`。因此日志、PDF 元数据与实际 PNG 目视检查缺一不可；有问题就修改并重新渲染。
+`overlay` 定位超出页面时，TeX 不一定报告 `Overfull \hbox`。因此日志、PDF 元数据与实际 PNG 目视检查缺一不可。先集中记录全组问题，再对技术错误、编译阻塞或明显排版问题（缺字、截断、重叠、越界、箭头遮挡、手机宽度下不可读等）定向修复；重新编译 `main.tex`、按页导出，并复查受影响页面及整份 PDF 的页数和页序。修改共享样式后须复查全部页面。
 
-验收通过后再复制成正式输出：
+达到技术正确、页面完整和可读性要求后停止，不为主观美化反复重排，也不进行无限制的自动修复。同一问题修复无进展时停止自动重试，报告剩余问题与原因；未通过项不能标记为验收通过。
+
+逐页验收通过后，在同一个 PowerShell 会话中继续，将整份 PDF 与按主题命名的 PNG 复制为正式输出：
 
 ```powershell
-Copy-Item -LiteralPath .build/example-transformer.pdf -Destination output/example-transformer.pdf
-Copy-Item -LiteralPath .build/example-transformer.png -Destination output/example-transformer.png
+Copy-Item -LiteralPath .build/main.pdf -Destination output/main.pdf
+for ($i = 0; $i -lt $pagePngs.Count; $i++) {
+  $targetPng = Join-Path 'output' ($figureNames[$i] + '.png')
+  Copy-Item -LiteralPath $pagePngs[$i].FullName -Destination $targetPng
+}
 Set-Location ..
-npm.cmd run docs:build
 ```
 
-多页 PDF 不使用 `-singlefile`，应导出并检查每一页。保留矢量 PDF，PNG 长边至少 2000 px；截图不能替代 PDF 源文件。交付时列出源码和产物、实际检查结果、必要假设与技术修正；工具缺失时说明未完成的检查，不将“提供了命令”写成“验证通过”。
+若同时修改本博客页面或其引用的模板，再从仓库根目录运行 `npm.cmd run docs:build`，检查文档构建。
+
+正式交付以 `output/main.pdf` 为主，每页对应一张 PNG；单图任务沿用同一流程，只生成一页。保留矢量 PDF，PNG 长边至少 2000 px；截图不能替代 PDF 源文件。交付时列出 `main.tex`、共享样式、子图源码和产物，说明 PDF 页码与 PNG 文件名的对应关系、实际逐页检查结果、必要假设与技术修正；工具缺失时说明未完成的检查，不将“提供了命令”写成“验证通过”。

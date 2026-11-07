@@ -1,14 +1,5 @@
-% Compile from latex/: xelatex -output-directory=.build example-transformer.tex
+% Page body only; loaded by main.tex.
 % This is one defined Pre-LN FFN residual sublayer, not a complete GPT-2 block.
-\documentclass[11pt]{article}
-\input{paper-code-style.tex}
-\PaperCodePortrait
-% Enlarge content for a phone-width preview; retain the shared style hierarchy.
-\renewcommand{\PaperModuleFont}{\normalfont\fontsize{14}{18}\selectfont\bfseries}
-\renewcommand{\PaperBodyFont}{\normalfont\fontsize{14}{18}\selectfont}
-\renewcommand{\PaperNoteFont}{\normalfont\fontsize{11}{15}\selectfont}
-
-\begin{document}
 \begin{papercodepage}
   \node[pagetitle,anchor=north,text width=156mm] at (90,12)
     {前馈网络与残差连接};
@@ -51,4 +42,3 @@
     本例定义无 Dropout 的 FFN 子层，不包含注意力子层。}
   };
 \end{papercodepage}
-\end{document}

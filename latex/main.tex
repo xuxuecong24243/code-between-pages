@@ -1,0 +1,14 @@
+% Compile the whole series from latex/: xelatex -output-directory=.build main.tex
+\documentclass[11pt]{article}
+\input{paper-code-style.tex}
+\PaperCodePortrait
+% Enlarge content for a phone-width preview; retain the shared style hierarchy.
+\renewcommand{\PaperModuleFont}{\normalfont\fontsize{14}{18}\selectfont\bfseries}
+\renewcommand{\PaperBodyFont}{\normalfont\fontsize{14}{18}\selectfont}
+\renewcommand{\PaperNoteFont}{\normalfont\fontsize{11}{15}\selectfont}
+
+\begin{document}
+\input{figures/01_transformer.tex}
+% For each additional page, add \clearpage followed by its \input here.
+% Keep page breaks in main.tex and page bodies in figures/.
+\end{document}
