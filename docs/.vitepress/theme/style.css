@@ -22,25 +22,33 @@
   color: var(--vp-c-text-2);
 }
 
-/* 浅色模式：首页整体背景 */
+/* 首页背景独立于内容高度，随视口铺满并保留底部构图。 */
 .VPContent.is-home {
   min-height: 100vh;
+  isolation: isolate;
+}
 
-  background-image:
-    linear-gradient(
-      rgba(255, 255, 255, 0.00),
-      rgba(255, 255, 255, 0.00)
-    ),
-    url('/images/home-bg.webp');
-
-  background-size: cover;
-  background-position: center;
+.VPContent.is-home::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* 原图 5692 × 3623；红线约在 y=3134，将下方 489px 移出视口。 */
+  --home-bg-image-width: max(100vw, calc(100vh * 5692 / 3134));
+  background-image: url('/images/home-bg.webp');
+  background-size: var(--home-bg-image-width) auto;
+  background-position: center calc(100% + var(--home-bg-image-width) * 489 / 5692);
   background-repeat: no-repeat;
 }
 
 /* 深色模式取消背景图 */
 .dark .VPContent.is-home {
   background: var(--vp-c-bg);
+}
+
+.dark .VPContent.is-home::before {
+  display: none;
 }
 
 mark {
