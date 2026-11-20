@@ -109,13 +109,6 @@ hero:
   </div>
 </a>
 
-<a class="topic-card" href="/code-between-pages/about/">
-  <div class="topic-title"><span class="site-icon site-icon--user-circle" aria-hidden="true"></span>About</div>
-  <div class="topic-desc">
-    About this site and how the knowledge base is organized.
-  </div>
-</a>
-
 <a class="topic-card" href="/code-between-pages/notes/">
   <div class="topic-title"><span class="site-icon site-icon--book" aria-hidden="true"></span>学习笔记</div>
   <div class="topic-desc">
