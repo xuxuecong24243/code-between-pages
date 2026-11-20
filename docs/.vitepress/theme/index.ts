@@ -1,6 +1,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
+import './notes.css'
 
 import HeroProfile from './components/HeroProfile.vue'
 

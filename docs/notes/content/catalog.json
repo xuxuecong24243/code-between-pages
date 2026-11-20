@@ -1,0 +1,17 @@
+{
+  "categories": [
+    {
+      "slug": "llm",
+      "title": "大语言模型",
+      "description": "记录大语言模型的原理、实现与实验中的问题。"
+    }
+  ],
+  "books": [
+    {
+      "slug": "llms-from-scratch",
+      "category": "llm",
+      "title": "从零构建大模型",
+      "description": "围绕阅读与代码实践，保留每一章学习时提出的问题、理解过程和阶段总结。"
+    }
+  ]
+}

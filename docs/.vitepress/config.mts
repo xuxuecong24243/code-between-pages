@@ -1,11 +1,14 @@
 import { defineConfig } from 'vitepress'
 import mathjax3 from 'markdown-it-mathjax3'
 import footnote from 'markdown-it-footnote'
+import { safeNotesMarkdown } from './notes/security.mjs'
 
 export default defineConfig({
   title: 'Code Between Pages',
   description: 'Notes, Research & Code',
   base: '/code-between-pages/',
+  // Only validated, published notes receive routes through notes/[page].paths.js.
+  srcExclude: ['notes/content/**'],
 
   head: [
   [
@@ -23,6 +26,7 @@ export default defineConfig({
     config(md) {
       md.use(mathjax3)
       md.use(footnote)
+      md.use(safeNotesMarkdown)
     }
   },
 
@@ -33,7 +37,8 @@ export default defineConfig({
     { text: "Software", link: "/software/" },
     { text: 'Research', link: "/research/" },
     { text: "Programming", link: "/programming/" },
-    { text: "AI", link: "/ai/" }
+    { text: "AI", link: "/ai/" },
+    { text: "学习笔记", link: "/notes/" }
   ],
   
   outline: {

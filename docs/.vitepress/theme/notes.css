@@ -1,0 +1,27 @@
+/* Scoped additions retain VitePress typography, colors and responsive outline. */
+.notes-index .notes-book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.notes-index .notes-book-card {
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+.notes-index .notes-book-card:hover { border-color: var(--vp-c-brand-1); }
+.notes-index .notes-book-card h3 { margin-top: 0; }
+.notes-index .notes-book-card p { color: var(--vp-c-text-2); font-size: 14px; }
+.learning-note .vp-doc { overflow-wrap: anywhere; }
+.learning-note .vp-doc pre { overflow-x: auto; overflow-wrap: normal; }
+.learning-note .vp-doc table { display: block; max-width: 100%; overflow-x: auto; }
+.learning-note .vp-doc img { max-width: 100%; height: auto; }
+.learning-note mjx-container[display="true"] { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
+.learning-note .vp-doc h1 { line-height: 1.5; }
+@media (max-width: 640px) {
+  .learning-note .vp-doc h1 { font-size: 26px; }
+  .notes-index .notes-book-card { padding: 16px; }
+}
