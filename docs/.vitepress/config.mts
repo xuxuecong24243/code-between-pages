@@ -11,6 +11,7 @@ export default defineConfig({
   srcExclude: ['notes/content/**'],
 
   head: [
+  ['link', { rel: 'icon', type: 'image/svg+xml', href: '/code-between-pages/brand/site-mark.svg' }],
   [
     'script',
     {
@@ -107,10 +108,11 @@ export default defineConfig({
               { text: "学习项目生成器", link: "/ai/prompts/learning-project-generator" },
               { text: "小红书帖子生成器", link: "/ai/prompts/xiaohongshu-post-generator" },
               { text: "AI 学习助手", link: "/ai/prompts/ai-learning-framework" },
-              { text: "AI 运动动作示意图生成 Prompt", link: "/ai/prompts/exercise-illustration-generator" },
-              { text: "极简学术风格技术示意图生成 Prompt", link: "/ai/prompts/minimalist-academic-diagram" },
+              { text: "AI 运动动作示意图生成", link: "/ai/prompts/exercise-illustration-generator" },
+              { text: "极简学术风格技术示意图生成", link: "/ai/prompts/minimalist-academic-diagram" },
               { text: "小红书 LaTeX 学术技术绘图", link: "/ai/prompts/xiaohongshu-latex-technical-diagram" },
-              { text: "小红书技术博主文案生成 Prompt", link: "/ai/prompts/xiaohongshu-tech-post-generator" }
+              { text: "图片转 LaTeX/TikZ", link: "/ai/prompts/image-to-latex-tikz" },
+              { text: "小红书技术博主文案生成", link: "/ai/prompts/xiaohongshu-tech-post-generator" }
             ]
           }
         ]

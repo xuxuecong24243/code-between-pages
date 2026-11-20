@@ -1,0 +1,80 @@
+/* Tabler Outline: local SVG masks inherit text color in both themes. */
+.site-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  vertical-align: -0.18em;
+  background-color: currentColor;
+  -webkit-mask: var(--site-icon) center / contain no-repeat;
+  mask: var(--site-icon) center / contain no-repeat;
+}
+.site-icon--route { --site-icon: url('./assets/icons/route.svg'); }
+.site-icon--code { --site-icon: url('./assets/icons/code.svg'); }
+.site-icon--file-text { --site-icon: url('./assets/icons/file-text.svg'); }
+.site-icon--book-2 { --site-icon: url('./assets/icons/book-2.svg'); }
+.site-icon--calendar { --site-icon: url('./assets/icons/calendar.svg'); }
+.site-icon--arrow-back-up { --site-icon: url('./assets/icons/arrow-back-up.svg'); }
+.site-icon--tools { --site-icon: url('./assets/icons/tools.svg'); }
+.site-icon--network { --site-icon: url('./assets/icons/topology-star-3.svg'); }
+.site-icon--messages { --site-icon: url('./assets/icons/messages.svg'); }
+.site-icon--user-circle { --site-icon: url('./assets/icons/user-circle.svg'); }
+.site-icon--book { --site-icon: url('./assets/icons/book.svg'); }
+
+.site-mark {
+  --site-icon: url('/brand/site-mark.svg');
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  color: var(--vp-c-text-1);
+}
+
+.topic-title,
+.featured-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topic-title .site-icon { width: 24px; height: 24px; }
+.featured-title .site-icon { width: 20px; height: 20px; }
+.topic-card .site-icon,
+.featured-card .site-icon,
+.notes-book-icon { color: var(--vp-c-text-2); }
+.topic-card:hover .site-icon,
+.topic-card:focus-visible .site-icon,
+.featured-card:hover .site-icon,
+.featured-card:focus-visible .site-icon,
+.notes-book-card:focus-within .notes-book-icon { color: var(--vp-c-brand-1); }
+.notes-book-icon { display: block; width: 28px; height: 28px; margin-bottom: 14px; }
+.home-section-icon { margin-right: 8px; width: 22px; height: 22px; }
+
+/* Preserve VitePress's existing copy behavior and copied-state confirmation. */
+.vp-doc div[class*='language-'] > button.copy:not(.copied) {
+  background-image: none;
+}
+.vp-doc div[class*='language-'] > button.copy:not(.copied)::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  background-color: var(--vp-c-text-2);
+  -webkit-mask: url('./assets/icons/copy.svg') center / contain no-repeat;
+  mask: url('./assets/icons/copy.svg') center / contain no-repeat;
+}
+
+.note-header { margin-bottom: 24px; }
+.note-breadcrumbs { display: flex; align-items: baseline; gap: 8px; font-size: 14px; line-height: 1.8; color: var(--vp-c-text-2); }
+.note-breadcrumbs > .site-icon { align-self: flex-start; margin-top: 4px; }
+.note-breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; list-style: none; margin: 0; padding: 0; }
+.note-breadcrumbs li { display: inline-flex; align-items: baseline; gap: 8px; }
+.note-breadcrumbs li + li::before { content: '/'; color: var(--vp-c-text-3); }
+.note-breadcrumbs a:hover,
+.note-return a:hover { color: var(--vp-c-brand-1); text-decoration: underline; }
+.note-dates { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 14px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.8; }
+.note-dates > span { display: inline-flex; align-items: center; gap: 6px; }
+.note-tags { margin-top: 8px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.note-return { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--vp-c-divider); }
+.note-return a { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--vp-c-text-2); }
+
+@media (max-width: 640px) {
+  .site-mark { width: 26px; height: 26px; margin-right: 8px; }
+}

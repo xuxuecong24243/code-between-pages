@@ -179,7 +179,7 @@ function chapterLabel(note, notes) {
 }
 
 function bookCard(book, notes, category) {
-  return `<div class="notes-book-card">\n\n### ${link(book.title, `/notes/${book.category}/${book.slug}/`)}\n\n${display(book.description ?? '')}\n\n${display(category.title)} · ${notes.length} 篇笔记 · 最近更新 ${latest(notes)}\n\n</div>`
+  return `<div class="notes-book-card">\n\n<span class="site-icon site-icon--book-2 notes-book-icon" aria-hidden="true"></span>\n\n### ${link(book.title, `/notes/${book.category}/${book.slug}/`)}\n\n${display(book.description ?? '')}\n\n${display(category.title)} · ${notes.length} 篇笔记 · 最近更新 ${latest(notes)}\n\n</div>`
 }
 
 /** VitePress's native dynamic route loader consumes these paths at build time. */
@@ -227,19 +227,27 @@ export function buildNotePages(root = defaultNotesRoot) {
     bookNotes.forEach((note, index) => {
       const label = chapterLabel(note, bookNotes)
       const anchor = note.chapter === undefined ? 'topics' : `chapter-${note.chapter}`
-      const navigation = `${link('学习笔记', '/notes/')} / ${link(category.title, `/notes/${category.slug}/`)} / ${link(book.title, bookUrl)} / ${link(label, `${bookUrl}#${anchor}`)}`
-      const dates = `发布于 ${note.published} · 更新于 ${note.updated ?? note.published}`
-      const tags = note.tags.length ? `\n\n标签：${note.tags.map(display).join(' · ')}` : ''
       const previous = bookNotes[index - 1]
       const next = bookNotes[index + 1]
-      add(`${note.bookKey}/${note.slug}`, note.title,
-        `${navigation}\n\n${dates}${tags}\n\n${note.body}\n\n---\n\n${link('返回书籍目录', bookUrl)}\n`,
+      add(`${note.bookKey}/${note.slug}`, note.title, note.body,
         {
           learningNote: true,
           pageClass: 'learning-note',
+          noteInfo: {
+            categoryTitle: category.title,
+            categoryUrl: `/notes/${category.slug}/`,
+            bookTitle: book.title,
+            bookUrl,
+            chapterLabel: label,
+            chapterUrl: `${bookUrl}#${anchor}`,
+            published: note.published,
+            updated: note.updated ?? note.published,
+            tags: note.tags
+          },
           description: note.description ?? `${book.title} · ${label} · ${note.title}`,
-          prev: previous ? { text: `上一篇：${previous.title}`, link: previous.url } : false,
-          next: next ? { text: `下一篇：${next.title}`, link: next.url } : false
+          // The default theme renders pager text with v-html, unlike NoteHeader.
+          prev: previous ? { text: `上一篇：${display(previous.title)}`, link: previous.url } : false,
+          next: next ? { text: `下一篇：${display(next.title)}`, link: next.url } : false
         })
     })
   }

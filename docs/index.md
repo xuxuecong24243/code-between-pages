@@ -15,12 +15,12 @@ hero:
       link: /research/
 ---
 
-## ⭐ Featured Posts
+## <span class="site-icon site-icon--file-text home-section-icon" aria-hidden="true"></span> Featured Posts
 
 <div class="featured-grid">
 
 <a class="featured-card" href="/code-between-pages/optimization/routing/lost-baggage-distribution/">
-  <div class="featured-title">Lost Baggage Distribution</div>
+  <div class="featured-title"><span class="site-icon site-icon--route" aria-hidden="true"></span>Lost Baggage Distribution</div>
   <div class="featured-desc">
     遗失行李配送问题：基于车辆路径优化建立整数规划模型，
     使用 Gurobi 进行两阶段优化，并通过 Lazy Constraints 消除子回路。
@@ -33,7 +33,7 @@ hero:
 </a>
 
 <a class="featured-card" href="/code-between-pages/programming/algorithms/graph/A-star.html">
-  <div class="featured-title">A* Search Algorithm</div>
+  <div class="featured-title"><span class="site-icon site-icon--route" aria-hidden="true"></span>A* Search Algorithm</div>
   <div class="featured-desc">
     A* 搜索算法原理、启发式函数、OPEN/CLOSED 集合、伪代码与 Python 实现。
   </div>
@@ -47,7 +47,7 @@ hero:
 
 
 <a class="featured-card" href="/code-between-pages/research/dynamic-programming/">
-  <div class="featured-title">Dynamic Programming</div>
+  <div class="featured-title"><span class="site-icon site-icon--file-text" aria-hidden="true"></span>Dynamic Programming</div>
   <div class="featured-desc">
     从递归出发理解动态规划，介绍最优子结构、重叠子问题、
     记忆化搜索与自底向上的动态规划实现。
@@ -68,51 +68,58 @@ hero:
 <div class="topic-grid">
 
 <a class="topic-card" href="/code-between-pages/optimization/">
-  <div class="topic-title">Optimization</div>
+  <div class="topic-title"><span class="site-icon site-icon--route" aria-hidden="true"></span>Optimization</div>
   <div class="topic-desc">
     Scheduling, routing, mathematical programming, and Gurobi-based optimization.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/software/">
-  <div class="topic-title">Software</div>
+  <div class="topic-title"><span class="site-icon site-icon--tools" aria-hidden="true"></span>Software</div>
   <div class="topic-desc">
     Development tools, software configuration, and practical engineering workflows.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/research/">
-  <div class="topic-title">Research</div>
+  <div class="topic-title"><span class="site-icon site-icon--file-text" aria-hidden="true"></span>Research</div>
   <div class="topic-desc">
     Scheduling theory, literature reviews, papers, and thesis materials.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/programming/">
-  <div class="topic-title">Programming</div>
+  <div class="topic-title"><span class="site-icon site-icon--code" aria-hidden="true"></span>Programming</div>
   <div class="topic-desc">
     LaTeX, Git, Markdown, Python, algorithms, and development notes.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/ai/">
-  <div class="topic-title">AI</div>
+  <div class="topic-title"><span class="site-icon site-icon--network" aria-hidden="true"></span>AI</div>
   <div class="topic-desc">
     ChatGPT, Claude, Cursor, prompt engineering, and AI workflows.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/interview/">
-  <div class="topic-title">Interview</div>
+  <div class="topic-title"><span class="site-icon site-icon--messages" aria-hidden="true"></span>Interview</div>
   <div class="topic-desc">
     A collection of questions encountered during interviews.
   </div>
 </a>
 
 <a class="topic-card" href="/code-between-pages/about/">
-  <div class="topic-title">About</div>
+  <div class="topic-title"><span class="site-icon site-icon--user-circle" aria-hidden="true"></span>About</div>
   <div class="topic-desc">
     About this site and how the knowledge base is organized.
+  </div>
+</a>
+
+<a class="topic-card" href="/code-between-pages/notes/">
+  <div class="topic-title"><span class="site-icon site-icon--book" aria-hidden="true"></span>学习笔记</div>
+  <div class="topic-desc">
+    按领域、书籍与章节，记录阅读和实践中的问题、理解与总结。
   </div>
 </a>
 

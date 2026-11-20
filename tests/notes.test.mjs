@@ -67,6 +67,19 @@ test('a second file is discovered without route changes and creates next/previou
   assert.equal(second.next, false)
 })
 
+test('pager titles are escaped for the default theme HTML renderer', t => {
+  const root = fixture(t)
+  note(root, 'first.md')
+  note(root, 'second.md', {
+    ...baseMetadata, slug: 'later', order: 1,
+    title: '<img src=x onerror="alert(1)"> {{ unsafe() }}'
+  })
+  const first = buildNotePages(root).find(page => page.params.page.endsWith('/chapter-seven'))
+  const title = frontmatter(first.content).next.text
+  assert.doesNotMatch(title, /<img|\{\{ unsafe/)
+  assert.match(title, /&#60;img/)
+})
+
 test('chapter number, same-chapter order, slug and topics determine browsing order', t => {
   const root = fixture(t)
   note(root, '01-ten.md', { ...baseMetadata, slug: 'chapter-ten', chapter: 10 })
