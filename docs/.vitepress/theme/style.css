@@ -58,6 +58,17 @@ mark {
   border-radius: 3px;
 }
 
+/* Directory links retain their brand color without a persistent underline. */
+.link-directory .vp-doc li a {
+  text-decoration: none;
+}
+
+.link-directory .vp-doc li a:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 /* All Markdown document pages use the available desktop width. */
 @media (min-width: 960px) {
   #VPContent .VPDoc > .container {

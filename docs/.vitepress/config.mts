@@ -3,6 +3,12 @@ import mathjax3 from 'markdown-it-mathjax3'
 import footnote from 'markdown-it-footnote'
 import { safeNotesMarkdown } from './notes/security.mjs'
 
+// Treat Python attachments as files instead of appending an HTML page suffix.
+process.env.VITE_EXTRA_EXTENSIONS = [...new Set([
+  ...(process.env.VITE_EXTRA_EXTENSIONS || '').split(',').filter(Boolean),
+  'py'
+])].join(',')
+
 export default defineConfig({
   title: 'Code Between Pages',
   description: 'Notes, Research & Code',

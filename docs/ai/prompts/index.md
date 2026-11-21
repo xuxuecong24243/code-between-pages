@@ -1,3 +1,7 @@
+---
+pageClass: link-directory
+---
+
 # Prompt Library
 
 - [学习项目生成器](./learning-project-generator)
