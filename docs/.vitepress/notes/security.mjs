@@ -13,6 +13,23 @@ export function validateNoteSource(body, file = 'note') {
 }
 
 export function safeNotesMarkdown(md, { publicDir = defaultPublicDir } = {}) {
+  // Book directories need stable chapter anchors. Keep arbitrary Markdown
+  // attributes disabled; recognize only the generated directory IDs.
+  md.core.ruler.before('anchor', 'book_heading_ids', state => {
+    if (!state.env.safeLearningBook) return
+    for (let index = 0; index < state.tokens.length - 1; index++) {
+      const heading = state.tokens[index]
+      const inline = state.tokens[index + 1]
+      if (heading.type !== 'heading_open' || inline.type !== 'inline') continue
+      const last = inline.children?.at(-1)
+      const match = last?.type === 'text' && last.content.match(/\s+\{#(chapter-[1-9]\d*|topics)\}$/)
+      if (!match) continue
+      heading.attrSet('id', match[1])
+      last.content = last.content.slice(0, -match[0].length)
+      inline.content = inline.content.slice(0, -match[0].length)
+    }
+  })
+
   // Keep the site's existing math renderer for existing pages. Notes use a
   // restricted TeX package set, without HTML, URL, require or autoload macros.
   const safeMath = { inline: { ruler: { after() {} } }, block: { ruler: { after() {} } }, renderer: { rules: {} } }
@@ -60,9 +77,13 @@ export function safeNotesMarkdown(md, { publicDir = defaultPublicDir } = {}) {
     // whitelisted by catalog.mjs and never copied wholesale into a Vue page.
     const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)/)?.[1] || ''
     const note = /^learningNote: true\r?$/m.test(frontmatter)
-    if (!note) return render(source, env)
+    const book = /^learningBook: true\r?$/m.test(frontmatter)
+    if (!note && !book) return render(source, env)
     const oldHtml = md.options.html
+    const oldSafeNote = env.safeLearningNote
+    const oldSafeBook = env.safeLearningBook
     env.safeLearningNote = true
+    env.safeLearningBook = book
     md.options.html = false
     md.core.ruler.disable('curly_attributes', true)
     md.core.ruler.disable('github-alerts', true)
@@ -74,6 +95,8 @@ export function safeNotesMarkdown(md, { publicDir = defaultPublicDir } = {}) {
     } finally {
       md.options.html = oldHtml
       md.validateLink = validateLink
+      env.safeLearningNote = oldSafeNote
+      env.safeLearningBook = oldSafeBook
       md.core.ruler.enable('curly_attributes', true)
       md.core.ruler.enable('github-alerts', true)
       md.block.ruler.enable('snippet', true)

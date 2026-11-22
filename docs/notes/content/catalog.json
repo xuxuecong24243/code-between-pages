@@ -11,7 +11,15 @@
       "slug": "llms-from-scratch",
       "category": "llm",
       "title": "从零构建大模型",
+      "cover": "/images/book-covers/llms-from-scratch.png",
       "description": "围绕阅读与代码实践，保留每一章学习时提出的问题、理解过程和阶段总结。"
+    },
+    {
+      "slug": "rag-practice",
+      "category": "llm",
+      "title": "大模型应用开发 RAG 实战课",
+      "cover": "/images/book-covers/rag-practice.png",
+      "description": "RAG · LangChain · LlamaIndex · Milvus · DeepSeek · 知识库实践"
     }
   ]
 }

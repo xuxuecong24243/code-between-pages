@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from 'node:fs'
-import { resolve, join } from 'node:path'
+import { resolve, join, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseDocument, stringify } from 'yaml'
 import { validateNoteSource } from './security.mjs'
@@ -68,11 +68,17 @@ function readCatalog(root) {
   }
   for (const book of catalog.books) {
     object(book, file, 'book')
-    keys(book, new Set(['slug', 'category', 'title', 'description']), file)
+    keys(book, new Set(['slug', 'category', 'title', 'description', 'cover']), file)
     slug(book.slug, file, 'book.slug')
     slug(book.category, file, 'book.category')
     text(book.title, file, 'book.title')
     text(book.description, file, 'book.description', true)
+    if (book.cover !== undefined) {
+      text(book.cover, file, 'book.cover')
+      if (!/^\/images\/book-covers\/[a-zA-Z0-9_-]+\.(?:jpe?g|png|webp|avif|svg)$/i.test(book.cover)) {
+        fail(file, 'book.cover must be a local /images/book-covers/<filename> image path')
+      }
+    }
     if (!categorySlugs.has(book.category)) fail(file, `unknown category "${book.category}" for book "${book.slug}"`)
     const key = `${book.category}/${book.slug}`
     if (bookKeys.has(key)) fail(file, `duplicate book slug "${key}"`)
@@ -104,7 +110,8 @@ export function loadNotes(root = defaultNotesRoot) {
   const books = new Map(catalog.books.map(book => [`${book.category}/${book.slug}`, book]))
   const urls = new Set()
   const chapterTitles = new Map()
-  const notes = markdownFiles(root).map(file => {
+  const sources = markdownFiles(root).map(file => {
+    const isOverview = basename(file) === 'index.md'
     const source = readFileSync(file, 'utf8').replace(/^\uFEFF/, '')
     const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)
     if (!match) fail(file, 'missing YAML frontmatter')
@@ -114,8 +121,15 @@ export function loadNotes(root = defaultNotesRoot) {
     try { metadata = document.toJS({ maxAliasCount: 0 }) } catch (error) { fail(file, error.message) }
     object(metadata, file, 'frontmatter')
     keys(metadata, noteFields, file)
-    for (const field of ['title', 'slug', 'category', 'book']) text(metadata[field], file, field)
-    for (const field of ['slug', 'category', 'book']) slug(metadata[field], file, field)
+    if (isOverview) {
+      for (const field of ['slug', 'chapter', 'chapterTitle', 'order']) {
+        if (metadata[field] !== undefined) fail(file, `book overview must omit ${field}`)
+      }
+    } else {
+      slug(metadata.slug, file, 'slug')
+    }
+    text(metadata.title, file, 'title')
+    for (const field of ['category', 'book']) slug(metadata[field], file, field)
     text(metadata.chapterTitle, file, 'chapterTitle', true)
     text(metadata.description, file, 'description', true)
     if (metadata.chapter !== undefined && (!Number.isSafeInteger(metadata.chapter) || metadata.chapter < 1)) {
@@ -138,8 +152,8 @@ export function loadNotes(root = defaultNotesRoot) {
     if (!categories.has(metadata.category)) fail(file, `unknown category "${metadata.category}"`)
     const bookKey = `${metadata.category}/${metadata.book}`
     if (!books.has(bookKey)) fail(file, `unknown book "${bookKey}"`)
-    const url = `/notes/${bookKey}/${metadata.slug}.html`
-    if (urls.has(url)) fail(file, `duplicate note URL "${url}"`)
+    const url = isOverview ? `/notes/${bookKey}/` : `/notes/${bookKey}/${metadata.slug}.html`
+    if (urls.has(url)) fail(file, `duplicate ${isOverview ? 'book overview' : 'note URL'} "${url}"`)
     urls.add(url)
     if (metadata.chapterTitle) {
       const key = `${bookKey}/${metadata.chapter}`
@@ -149,9 +163,16 @@ export function loadNotes(root = defaultNotesRoot) {
     const body = source.slice(match[0].length)
     if (!body.trim()) fail(file, 'note body must not be empty')
     validateNoteSource(body, file)
-    return { ...metadata, draft: metadata.draft ?? false, tags: metadata.tags ?? [], file, body, url, bookKey }
-  }).sort((a, b) => a.bookKey.localeCompare(b.bookKey, 'en') || compareNotes(a, b))
-  return { catalog, categories, books, notes, published: notes.filter(note => !note.draft) }
+    return { ...metadata, draft: metadata.draft ?? false, tags: metadata.tags ?? [], file, body, url, bookKey, isOverview }
+  })
+  const notes = sources.filter(source => !source.isOverview)
+    .sort((a, b) => a.bookKey.localeCompare(b.bookKey, 'en') || compareNotes(a, b))
+  const overviews = sources.filter(source => source.isOverview)
+  return {
+    catalog, categories, books, notes, overviews,
+    published: notes.filter(note => !note.draft),
+    publishedOverviews: overviews.filter(overview => !overview.draft)
+  }
 }
 
 // Encoding all Markdown punctuation also prevents metadata from introducing HTML,
@@ -178,15 +199,19 @@ function chapterLabel(note, notes) {
   return `第 ${note.chapter} 章${title ? `：${title}` : ''}`
 }
 
-function bookCard(book, notes, category) {
-  return `<div class="notes-book-card">\n\n<span class="site-icon site-icon--book-2 notes-book-icon" aria-hidden="true"></span>\n\n### ${link(book.title, `/notes/${book.category}/${book.slug}/`)}\n\n${display(book.description ?? '')}\n\n${display(category.title)} · ${notes.length} 篇笔记 · 最近更新 ${latest(notes)}\n\n</div>`
+function bookCard(book, notes, category, overview) {
+  const bookUrl = `/notes/${book.category}/${book.slug}/`
+  const cover = `<BookCover title="${display(book.title)}" href="${bookUrl}"${book.cover ? ` src="${book.cover}"` : ''} />`
+  return `<div class="notes-book-card">\n\n${cover}\n\n<div class="notes-book-info">\n\n### ${link(book.title, bookUrl)}\n\n${display(book.description ?? '')}\n\n${display(category.title)} · ${notes.length} 篇笔记 · 最近更新 ${latest(overview ? [...notes, overview] : notes)}\n\n</div>\n\n</div>`
 }
 
 /** VitePress's native dynamic route loader consumes these paths at build time. */
 export function buildNotePages(root = defaultNotesRoot) {
-  const { catalog, categories, published } = loadNotes(root)
+  const { catalog, categories, published, publishedOverviews } = loadNotes(root)
+  const overviews = new Map(publishedOverviews.map(overview => [overview.bookKey, overview]))
   const paths = []
-  const populatedBooks = catalog.books.filter(book => published.some(note => note.bookKey === `${book.category}/${book.slug}`))
+  const populatedBooks = catalog.books.filter(book => overviews.has(`${book.category}/${book.slug}`)
+    || published.some(note => note.bookKey === `${book.category}/${book.slug}`))
   const populatedCategories = catalog.categories.filter(category => populatedBooks.some(book => book.category === category.slug))
   const add = (route, title, body, frontmatter = {}) => paths.push({
     params: { page: route },
@@ -196,14 +221,14 @@ export function buildNotePages(root = defaultNotesRoot) {
 
   const homeSections = populatedCategories.map(category => {
     const cards = populatedBooks.filter(book => book.category === category.slug)
-      .map(book => bookCard(book, notesFor(book), category)).join('\n\n')
+      .map(book => bookCard(book, notesFor(book), category, overviews.get(`${book.category}/${book.slug}`))).join('\n\n')
     return `## ${display(category.title)}\n\n${display(category.description ?? '')}\n\n${link('浏览此领域', `/notes/${category.slug}/`)}\n\n<div class="notes-book-grid">\n\n${cards}\n\n</div>`
   }).join('\n\n')
   add('index', '学习笔记', `# 学习笔记\n\n按技术领域与书籍，整理阅读、实践中遇到的问题，以及逐步形成的理解。\n\n${homeSections || '还没有已发布的学习笔记。'}\n`)
 
   for (const category of populatedCategories) {
     const cards = populatedBooks.filter(book => book.category === category.slug)
-      .map(book => bookCard(book, notesFor(book), category)).join('\n\n')
+      .map(book => bookCard(book, notesFor(book), category, overviews.get(`${book.category}/${book.slug}`))).join('\n\n')
     add(`${category.slug}/index`, `${category.title}学习笔记`, `${link('学习笔记', '/notes/')}\n\n# ${display(category.title)}\n\n${display(category.description ?? '')}\n\n<div class="notes-book-grid">\n\n${cards}\n\n</div>\n`)
   }
 
@@ -211,6 +236,7 @@ export function buildNotePages(root = defaultNotesRoot) {
     const bookNotes = notesFor(book)
     const category = categories.get(book.category)
     const bookUrl = `/notes/${book.category}/${book.slug}/`
+    const overview = overviews.get(`${book.category}/${book.slug}`)
     const chapterNumbers = [...new Set(bookNotes.map(note => note.chapter))]
     const chapters = chapterNumbers.map(chapter => {
       const group = bookNotes.filter(note => note.chapter === chapter)
@@ -222,7 +248,17 @@ export function buildNotePages(root = defaultNotesRoot) {
       const note = bookNotes.find(note => note.chapter === chapter)
       return `- ${link(chapterLabel(note, bookNotes), chapter === undefined ? '#topics' : `#chapter-${chapter}`)}`
     }).join('\n')
-    add(`${book.category}/${book.slug}/index`, book.title, `${link('学习笔记', '/notes/')} / ${link(category.title, `/notes/${category.slug}/`)}\n\n# ${display(book.title)}\n\n${display(book.description ?? '')}\n\n已发布 ${bookNotes.length} 篇笔记 · 最近更新 ${latest(bookNotes)}\n\n## 章节目录\n\n${chapterLinks}\n\n${chapters}\n`)
+    const breadcrumbs = `${link('学习笔记', '/notes/')} / ${link(category.title, `/notes/${book.category}/`)}`
+    if (overview) {
+      const status = { 'in-progress': '学习中', completed: '已完成', reviewing: '复习中' }[overview.status ?? 'in-progress']
+      const progress = `## 学习进度\n\n状态：${status}\n\n已发布 ${bookNotes.length} 篇笔记 · 已完成 ${bookNotes.filter(note => note.status === 'completed').length} 篇笔记 · 最近更新 ${latest([...bookNotes, overview])}`
+      const directory = bookNotes.length ? `${chapterLinks}\n\n${chapters}` : '> 章节笔记会随着学习过程逐步补充。\n\n待更新'
+      add(`${book.category}/${book.slug}/index`, overview.title,
+        `${breadcrumbs}\n\n${overview.body}\n\n${progress}\n\n## 学习笔记\n\n${directory}\n`,
+        { learningBook: true, description: overview.description ?? book.description, prev: false, next: false })
+    } else {
+      add(`${book.category}/${book.slug}/index`, book.title, `${breadcrumbs}\n\n# ${display(book.title)}\n\n${display(book.description ?? '')}\n\n已发布 ${bookNotes.length} 篇笔记 · 最近更新 ${latest(bookNotes)}\n\n## 章节目录\n\n${chapterLinks}\n\n${chapters}\n`)
+    }
 
     bookNotes.forEach((note, index) => {
       const label = chapterLabel(note, bookNotes)

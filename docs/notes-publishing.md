@@ -11,13 +11,17 @@ description: 领域、书籍和 Markdown 学习笔记的维护方式。
 docs/notes/content/
 ├── catalog.json
 └── llm/
-    └── llms-from-scratch/
-        ├── chapter-07-instruction-finetuning.md
-        └── chapter-08.md
+    ├── llms-from-scratch/
+    │   └── chapter-07-instruction-finetuning.md
+    └── rag-practice/
+        └── index.md          # 书籍介绍，目录与进度自动追加
 docs/public/notes-assets/      # 笔记图片
+└── rag-practice/
+templates/notes/              # 项目根目录下，不参与发布
+└── rag-practice.md
 ```
 
-这里的 `chapter-08.md` 仅演示将来的文件位置，并不是已经发布的章节。磁盘文件名用于整理文件；URL 由 `category`、`book` 和 `slug` 确定，修改标题或文件名不会改变链接。
+采用“技术领域 / 书籍”组织方式，后续新书继续放在对应领域下，不另建重复的“书籍”分类。普通笔记的磁盘文件名用于整理文件；URL 由 `category`、`book` 和 `slug` 确定，修改标题或文件名不会改变链接。`index.md` 专用于书籍首页。
 
 ## 新增技术领域与书籍
 
@@ -43,7 +47,39 @@ docs/public/notes-assets/      # 笔记图片
 }
 ```
 
-slug 使用小写英文字母、数字和连字符，例如 `llm`、`llms-from-scratch`。书籍引用的领域必须已存在。登记领域或书籍后，只有至少一篇非草稿笔记时才显示对应目录，避免空白展示页。不需要封面图片。
+slug 使用小写英文字母、数字和连字符，例如 `llm`、`llms-from-scratch`。书籍引用的领域必须已存在。登记领域或书籍后，至少有一篇非草稿笔记，或有一份非草稿书籍首页 `index.md`，才显示对应目录。不需要封面图片。
+
+书籍封面是可选项：将真实封面放入 `docs/public/images/book-covers/`，在对应 `books` 对象中增加 `"cover": "/images/book-covers/example.jpg"` 即可。文件名使用英文字母、数字、连字符或下划线，支持 JPG、PNG、WebP、AVIF、SVG；不要添加部署前缀。未配置或加载失败时显示默认书籍图标，封面按原比例完整显示。当前两本书使用 `llms-from-scratch.png` 和 `rag-practice.png`，替换上述文件后重新构建即可显示，无需修改组件或导航。
+
+### 在零篇笔记时初始化书籍首页
+
+在 `docs/notes/content/<领域>/<书籍>/index.md` 中写书籍介绍，使用以下 frontmatter：
+
+```yaml
+---
+title: "《大模型应用开发 RAG 实战课》学习笔记"
+category: llm
+book: rag-practice
+published: '2026-11-22'
+status: in-progress
+draft: false
+---
+```
+
+首页不填写 `slug`、`chapter`、`chapterTitle` 或 `order`。正文保存书籍基本信息、学习目标和学习方式，系统在末尾追加“学习进度”和“学习笔记”，无需手工维护章节链接。进度统计已发布笔记与其中 `status: completed` 的篇数，不推断原书总章节数。首页不计入笔记数量，不进入上下篇导航；`draft: true` 的首页不发布。没有首页的旧书继续使用原来的自动目录。
+
+同一本书只建一个 `index.md`；入口为 `/notes/<category>/<book>/`。第二本、第三本书同样只需登记一次 `books` 中的 `slug`、`category`、`title`、`description`，再建立首页。只有新技术领域才需要添加 `categories` 条目。
+
+### RAG Practice 新增笔记 {#rag-practice-新增笔记}
+
+《大模型应用开发 RAG 实战课》的入口是“学习笔记 → 大语言模型 → 大模型应用开发 RAG 实战课”。以后新增一篇笔记：
+
+1. 复制项目根目录的 `templates/notes/rag-practice.md` 到 `docs/notes/content/llm/rag-practice/<english-slug>.md`。模板位于 `docs/` 之外，不生成页面、不进入导航或搜索；不要把未填写的模板放进内容目录，扫描器会校验其中所有 `.md`，包括下划线文件和草稿。
+2. 修改中文 `title` 和正文标题、英文 `slug`、实际 `published: 'YYYY-MM-DD'` 与 `tags`。保留 `category: llm`、`book: rag-practice`，使用 `status: in-progress`；完成时可改为 `completed`，复习时可改为 `reviewing`。这些字段沿用本站规范，不使用 `date`、中文书名 `book` 或 `status: learning`。
+3. 填写学习内容，保留“我的疑问”。已知原书章节时可添加 `chapter`（正整数）与 `chapterTitle`（真实章名）；专题笔记省略这两项。文件名与 slug 使用英文 kebab-case，例如 `text-splitting`，不要使用 `index` 作为文章 slug。
+4. 图片放入 `docs/public/notes-assets/rag-practice/`，例如 `01-rag-pipeline.png`。正文引用 `![RAG 流程](/notes-assets/rag-practice/01-rag-pipeline.png)`；这是命名示例，请先保存真实图片再引用。
+5. 发布前把 `draft: true` 改为 `draft: false`，执行下方测试和构建命令。若正在预览，重启开发服务器以刷新动态目录。
+6. **新增本书笔记无需修改 catalog、导航或路由**。书籍首页、领域页、学习笔记首页及上下篇链接会自动更新。
 
 ## 新增一篇笔记
 
