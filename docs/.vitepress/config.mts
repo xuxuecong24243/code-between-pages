@@ -2,17 +2,14 @@ import { defineConfig } from 'vitepress'
 import mathjax3 from 'markdown-it-mathjax3'
 import footnote from 'markdown-it-footnote'
 import { safeNotesMarkdown } from './notes/security.mjs'
+import { downloadLinks } from './downloads.mjs'
 
-// Treat Python attachments as files instead of appending an HTML page suffix.
-process.env.VITE_EXTRA_EXTENSIONS = [...new Set([
-  ...(process.env.VITE_EXTRA_EXTENSIONS || '').split(',').filter(Boolean),
-  'py'
-])].join(',')
+const base = '/code-between-pages/'
 
 export default defineConfig({
   title: 'Code Between Pages',
   description: 'Notes, Research & Code',
-  base: '/code-between-pages/',
+  base,
   // Only validated, published notes receive routes through notes/[page].paths.js.
   srcExclude: ['notes/content/**'],
 
@@ -34,6 +31,7 @@ export default defineConfig({
       md.use(mathjax3)
       md.use(footnote)
       md.use(safeNotesMarkdown)
+      md.use(downloadLinks, { base })
     }
   },
 

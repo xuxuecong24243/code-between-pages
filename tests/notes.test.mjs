@@ -9,6 +9,7 @@ import { createMarkdownRenderer } from 'vitepress'
 import mathjax3 from 'markdown-it-mathjax3'
 import { loadNotes, buildNotePages } from '../docs/.vitepress/notes/catalog.mjs'
 import { validateNoteSource, safeNotesMarkdown } from '../docs/.vitepress/notes/security.mjs'
+import { downloadLinks } from '../docs/.vitepress/downloads.mjs'
 
 const baseCatalog = {
   categories: [{ slug: 'llm', title: '大语言模型' }],
@@ -247,7 +248,11 @@ for (const field of ['title', 'description']) {
 const rendererPublicDir = mkdtempSync(path.join(tmpdir(), 'blog-notes-images-'))
 after(() => rmSync(rendererPublicDir, { recursive: true, force: true }))
 const renderer = await createMarkdownRenderer(fileURLToPath(new URL('../docs/', import.meta.url)), {
-  config(md) { md.use(mathjax3); md.use(safeNotesMarkdown, { publicDir: rendererPublicDir }) }
+  config(md) {
+    md.use(mathjax3)
+    md.use(safeNotesMarkdown, { publicDir: rendererPublicDir })
+    md.use(downloadLinks, { base: '/code-between-pages/' })
+  }
 }, '/code-between-pages/')
 function renderNote(body, md = renderer) {
   return md.render(`---\nlearningNote: true\n---\n${body}`, { path: 'notes/test.md', relativePath: 'notes/test.md' })
@@ -267,6 +272,16 @@ test('unsafe link protocols are not emitted while HTTPS, mail and internal links
   assert.match(html, /href="https:\/\/example.com"/)
   assert.match(html, /href="mailto:hello@example.com"/)
   assert.match(html, /href="\/code-between-pages\/notes\/"/)
+})
+
+test('public Python attachments download under the deployment base without becoming HTML routes', () => {
+  const source = '[下载 Python 源文件](/downloads/llms-from-scratch/chapter-07-instruction-finetuning-commented.py)'
+  for (const html of [renderNote(source), renderer.render(source)]) {
+    assert.match(html, /href="\/code-between-pages\/downloads\/llms-from-scratch\/chapter-07-instruction-finetuning-commented\.py" download(?:="")?/)
+    assert.doesNotMatch(html, /\.py\.html/)
+  }
+  const links = renderNote('[internal](/notes/) [external](https://example.com/downloads/file.py)')
+  assert.doesNotMatch(links, /\sdownload(?:=|\s|>)/)
 })
 
 test('unsafe VitePress includes, snippets, containers and Vue fences are rejected', () => {

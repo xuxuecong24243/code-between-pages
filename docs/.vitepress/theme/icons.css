@@ -68,7 +68,7 @@
 .note-breadcrumbs li { display: inline-flex; align-items: baseline; gap: 8px; }
 .note-breadcrumbs li + li::before { content: '/'; color: var(--vp-c-text-3); }
 .note-breadcrumbs a:hover,
-.note-return a:hover { color: var(--vp-c-brand-1); text-decoration: underline; }
+.note-return a:hover { color: var(--vp-c-brand-1); }
 .note-dates { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 14px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.8; }
 .note-dates > span { display: inline-flex; align-items: center; gap: 6px; }
 .note-tags { margin-top: 8px; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }

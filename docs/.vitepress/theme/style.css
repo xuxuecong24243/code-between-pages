@@ -58,12 +58,12 @@ mark {
   border-radius: 3px;
 }
 
-/* Directory links retain their brand color without a persistent underline. */
-.link-directory .vp-doc li a {
-  text-decoration: none;
+/* Apply to every link and interaction state, including scoped theme styles. */
+a {
+  text-decoration: none !important;
 }
 
-.link-directory .vp-doc li a:focus-visible {
+a:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 3px;
   border-radius: 2px;
